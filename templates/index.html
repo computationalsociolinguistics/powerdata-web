@@ -6,7 +6,6 @@
     <title>Powerlifting Matcher - PowerData Match</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Chart.js y html2canvas -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -27,7 +26,6 @@
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col justify-between font-sans">
 
-    <!-- Encabezado -->
     <header class="border-b border-gray-800 bg-[#0f0f15] py-5 px-4 shadow-lg">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-black tracking-wider text-yellow-500 flex items-center gap-2">
@@ -39,18 +37,15 @@
         </div>
     </header>
 
-    <!-- Contenido Principal -->
     <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
         <div class="text-center mb-8">
             <h2 class="text-3xl font-extrabold md:text-4xl text-white mb-2">Compara tus marcas de Fuerza</h2>
             <p class="text-gray-400 text-sm md:text-base">Introduce tus levantamientos, genera tu cromo de atleta personalizado y analiza tus ratios frente a la élite.</p>
         </div>
 
-        <!-- Formulario e Inputs de búsqueda -->
         <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl mb-8">
             <form id="form-buscador" class="space-y-6">
                 
-                <!-- Info Personal -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-gray-400 mb-1" for="nombre-atleta">Tu Nombre o Instagram (@usuario)</label>
@@ -62,7 +57,6 @@
                     </div>
                 </div>
 
-                <!-- 1. BLOQUE DE LEVANTAMIENTOS -->
                 <div>
                     <h4 class="text-sm font-bold text-yellow-500 uppercase tracking-wider mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-calculator"></i> 1. Introduce tus Marcas (SBD)
@@ -83,7 +77,6 @@
                     </div>
                 </div>
 
-                <!-- Total -->
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="total">
                         Total Calculado (kg)
@@ -92,7 +85,6 @@
                         class="w-full bg-[#15151f] border border-yellow-500/30 rounded-xl px-4 py-3 text-yellow-400 font-extrabold focus:outline-none text-xl cursor-not-allowed">
                 </div>
 
-                <!-- 2. BLOQUE DE FILTROS AVANZADOS -->
                 <div class="border-t border-gray-800/80 pt-5">
                     <h4 class="text-sm font-bold text-yellow-500 uppercase tracking-wider mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-filter"></i> 2. Filtros de Búsqueda
@@ -133,28 +125,20 @@
             </form>
         </div>
 
-        <!-- Loader -->
         <div id="loader-container" class="hidden flex flex-col items-center justify-center py-12">
             <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-800 h-16 w-16 mb-4"></div>
             <p class="text-yellow-500 font-bold tracking-wider animate-pulse text-sm">PROCESANDO DATOS EN TIEMPO REAL...</p>
         </div>
 
-        <!-- SECCIÓN DE RESULTADOS -->
         <div id="seccion-resultados" class="hidden space-y-10">
 
-            <!-- GENERADOR DE CROMO PARA REDES (Estructura Súper Estable) -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl">
                 <div class="md:col-span-5 flex flex-col items-center">
-                    
-                    <!-- EL CROMO (Espaciados estrictos con márgenes fijos para evitar colapsos) -->
                     <div id="cromo-atleta" class="cromo-holografico w-[300px] h-[430px] rounded-2xl p-6 relative flex flex-col justify-between select-none" style="background: linear-gradient(135deg, #151522 0%, #0c0c14 60%, #1a0f24 100%); box-sizing: border-box;">
-                        
-                        <!-- Encabezado del Cromo (Sección superior independiente) -->
                         <div class="w-full mb-4">
                             <div class="flex justify-between items-start gap-4">
                                 <div class="min-w-0 flex-1">
                                     <span class="text-[10px] tracking-widest text-yellow-500 font-bold uppercase block mb-1">POWERLIFTER</span>
-                                    <!-- Ancho máximo estricto para proteger el nombre e interlineado seguro -->
                                     <div class="max-w-[170px]">
                                         <h4 id="cromo-nombre" class="text-[18px] font-bold text-white leading-snug truncate" style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">ATLETA</h4>
                                     </div>
@@ -168,20 +152,16 @@
                             </div>
                         </div>
 
-                        <!-- Total Central (Bloque central con márgenes forzados para crear espacio) -->
                         <div class="text-center w-full my-auto py-1">
                             <span class="text-[10px] tracking-wider text-gray-400 font-semibold uppercase block mb-1">TOTAL SBD</span>
-                            <!-- Estructura lineal y limpia para evitar superposiciones de texto -->
                             <div class="text-5xl font-bold text-yellow-500 tracking-tight block mb-4" style="font-family: system-ui, sans-serif; line-height: 1;">
                                 <span id="cromo-total-num">0.0</span><span class="text-xl font-semibold text-yellow-500/80 ml-1">kg</span>
                             </div>
-                            <!-- Aumentado el margen superior (mt-4) para alejarlo visiblemente del número de arriba -->
                             <div class="inline-block mt-4 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full">
                                 <span class="text-[10px] text-gray-300 font-medium">Percentil de Fuerza: <strong id="cromo-percentil" class="text-yellow-400 font-bold">--%</strong></span>
                             </div>
                         </div>
 
-                        <!-- Bloque de Movimientos SBD (Sección inferior independiente) -->
                         <div class="border-t border-gray-800/80 pt-4 w-full mt-auto">
                             <div class="grid grid-cols-3 text-center gap-2">
                                 <div class="bg-white/5 py-2 rounded-lg border border-white/5">
@@ -197,7 +177,6 @@
                                     <span id="cromo-dl" class="text-sm font-bold text-white block mt-0.5" style="font-family: system-ui, sans-serif;">0 kg</span>
                                 </div>
                             </div>
-                            <!-- Tu firma de Copyright -->
                             <div class="text-center mt-4 text-[9px] font-semibold tracking-wider text-yellow-500/40 uppercase" style="font-family: system-ui, sans-serif;">
                                 <i class="fa-solid fa-copyright"></i> Damián Morales Sánchez
                             </div>
@@ -218,10 +197,7 @@
                 </div>
             </div>
             
-            <!-- ANALÍTICAS EN PARALELO (DISTRIBUCIÓN + RADAR) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                
-                <!-- 1. Gráfico de Distribución (Campana de Gauss) -->
                 <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
                     <div class="flex items-center justify-between mb-4">
                         <div>
@@ -237,7 +213,6 @@
                     </div>
                 </div>
 
-                <!-- 2. Gráfico de Radar de Ratios (SBD) -->
                 <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
                     <div class="mb-4">
                         <h3 class="text-lg font-bold text-white flex items-center gap-2">
@@ -251,26 +226,28 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- NUEVA SECCIÓN: COMPARATIVA VISUAL DE RÉCORDS HISTÓRICOS (SBD) -->
             <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl">
-                <div class="mb-6">
-                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-crown text-yellow-500"></i> Comparativa frente al Récord Máximo Registrado
-                    </h3>
-                    <p class="text-xs text-gray-400 mt-0.5">Tu marca en cada movimiento comparada con el levantamiento histórico más alto bajo los filtros aplicados.</p>
+                <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div>
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-crown text-yellow-500"></i> Récords de la Categoría Seleccionada
+                        </h3>
+                        <p class="text-xs text-gray-400 mt-0.5">Tus levantamientos frente a las mejores marcas absolutas logradas bajo tus filtros de búsqueda.</p>
+                    </div>
+                    <span id="label-filtro-activo" class="text-[11px] font-bold text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 px-3 py-1 rounded-full shrink-0 self-start sm:self-auto">
+                        Filtro: Calculando...
+                    </span>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Sentadilla Card -->
                     <div class="bg-[#181824] border border-gray-800 rounded-xl p-4 flex flex-col justify-between">
                         <div>
                             <span class="text-xs font-bold text-green-500 tracking-wider uppercase block mb-2">Sentadilla (SQ)</span>
                             <div class="flex justify-between items-baseline mb-2">
                                 <span class="text-sm text-gray-400">Tú: <b id="comp-sq-user" class="text-white font-bold text-base">0 kg</b></span>
-                                <span class="text-xs text-gray-500">Récord: <b id="comp-sq-max" class="text-green-400/90 font-bold text-sm">-- kg</b></span>
+                                <span class="text-xs text-gray-500">Récord Cat: <b id="comp-sq-max" class="text-green-400/90 font-bold text-sm">-- kg</b></span>
                             </div>
                         </div>
                         <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden mt-2">
@@ -279,13 +256,12 @@
                         <span id="label-sq-percent" class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
                     </div>
 
-                    <!-- Banca Card -->
                     <div class="bg-[#181824] border border-gray-800 rounded-xl p-4 flex flex-col justify-between">
                         <div>
                             <span class="text-xs font-bold text-blue-400 tracking-wider uppercase block mb-2">Press Banca (BP)</span>
                             <div class="flex justify-between items-baseline mb-2">
                                 <span class="text-sm text-gray-400">Tú: <b id="comp-bp-user" class="text-white font-bold text-base">0 kg</b></span>
-                                <span class="text-xs text-gray-500">Récord: <b id="comp-bp-max" class="text-blue-400/90 font-bold text-sm">-- kg</b></span>
+                                <span class="text-xs text-gray-500">Récord Cat: <b id="comp-bp-max" class="text-blue-400/90 font-bold text-sm">-- kg</b></span>
                             </div>
                         </div>
                         <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden mt-2">
@@ -294,13 +270,12 @@
                         <span id="label-bp-percent" class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
                     </div>
 
-                    <!-- Peso Muerto Card -->
                     <div class="bg-[#181824] border border-gray-800 rounded-xl p-4 flex flex-col justify-between">
                         <div>
                             <span class="text-xs font-bold text-red-500 tracking-wider uppercase block mb-2">Peso Muerto (DL)</span>
                             <div class="flex justify-between items-baseline mb-2">
                                 <span class="text-sm text-gray-400">Tú: <b id="comp-dl-user" class="text-white font-bold text-base">0 kg</b></span>
-                                <span class="text-xs text-gray-500">Récord: <b id="comp-dl-max" class="text-red-400/90 font-bold text-sm">-- kg</b></span>
+                                <span class="text-xs text-gray-500">Récord Cat: <b id="comp-dl-max" class="text-red-400/90 font-bold text-sm">-- kg</b></span>
                             </div>
                         </div>
                         <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden mt-2">
@@ -311,7 +286,6 @@
                 </div>
             </div>
             
-            <!-- BLOQUE 1: Empates Exactos -->
             <div>
                 <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
                     <i class="fa-solid fa-equals text-yellow-500"></i> Atletas con tu mismo Total (<span id="total-exacto-label"></span> kg):
@@ -319,28 +293,23 @@
                 <div id="lista-exactos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
 
-            <!-- BLOQUE 2: Rivales Superiores -->
             <div>
                 <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
                     <i class="fa-solid fa-arrow-trend-up text-yellow-500"></i> Siguientes 10 rivales a batir (Total Superior):
                 </h3>
                 <div id="lista-rivales" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
-
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="border-t border-gray-900 bg-[#07070a] py-6 text-center text-xs text-gray-600">
         <p>&copy; 2026 PowerData Match. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Lógica JavaScript -->
     <script>
         let distribucionChart = null;
         let radarChart = null;
 
-        // --- CALCULADORA SBD AUTOMÁTICA ---
         const inputsMarca = document.querySelectorAll('.input-marca');
         const inputTotal = document.getElementById('total');
 
@@ -349,12 +318,10 @@
                 let sq = parseFloat(document.getElementById('sq').value) || 0;
                 let bp = parseFloat(document.getElementById('bp').value) || 0;
                 let dl = parseFloat(document.getElementById('dl').value) || 0;
-                
                 inputTotal.value = (sq + bp + dl).toFixed(1);
             });
         });
 
-        // --- CÁLCULO DE PERCENTIL (A partir de la Media y la Desviación) ---
         function calcularPercentil(x, media, desviacion) {
             if (desviacion === 0) return 50;
             const z = (x - media) / desviacion;
@@ -365,7 +332,6 @@
             return Math.round(p * 100);
         }
 
-        // --- RENDERIZAR CAMPANA DE GAUSS (Distribución) ---
         function renderizarGraficoCampana(totalUsuario, media, desviacion) {
             const ctx = document.getElementById('graficoDistribucion').getContext('2d');
             if (distribucionChart) distribucionChart.destroy();
@@ -430,7 +396,6 @@
             });
         }
 
-        // --- RENDERIZAR GRÁFICO DE RADAR ---
         function renderizarGraficoRadar(sqUser, bpUser, dlUser, sqAvg, bpAvg, dlAvg) {
             const ctx = document.getElementById('graficoRadar').getContext('2d');
             if (radarChart) radarChart.destroy();
@@ -486,7 +451,6 @@
             });
         }
 
-        // --- INSIGNIAS DE CAMPEONATO ---
         function obtenerInsigniaNivel(nivel) {
             let color = "bg-gray-800 text-gray-300 border-gray-700";
             let texto = `AEP${nivel}`;
@@ -496,7 +460,6 @@
             return `<span class="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded border ${color}">${texto}</span>`;
         }
 
-        // --- TARJETAS DE RESULTADOS ---
         function generarTarjetaHTML(atleta) {
             return `
                 <div class="bg-[#12121a] border border-gray-800 rounded-xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between">
@@ -527,7 +490,6 @@
                 </div>`;
         }
 
-        // --- SUBMIT DEL FORMULARIO ---
         document.getElementById('form-buscador').addEventListener('submit', async function(e) {
             e.preventDefault();
             const nombre = document.getElementById('nombre-atleta').value;
@@ -572,14 +534,12 @@
                     listaExactos.innerHTML = '';
                     listaRivales.innerHTML = '';
 
-                    // Percentil y Gráficas
                     let perc = 100;
                     if (data.estadisticas.media > 0) {
                         perc = calcularPercentil(parseFloat(total), data.estadisticas.media, data.estadisticas.desviacion);
                         document.getElementById('percentil-badge').textContent = `${perc}%`;
                         
                         renderizarGraficoCampana(parseFloat(total), data.estadisticas.media, data.estadisticas.desviacion);
-                        
                         renderizarGraficoRadar(
                             sq, bp, dl,
                             data.estadisticas.avg_squat || 0,
@@ -612,11 +572,17 @@
                         sexBadge.className = "bg-gray-500/10 text-gray-400 border border-gray-500/20 text-[10px] font-bold px-2.5 py-1 rounded-md shrink-0 block";
                     }
 
-                    // --- SECCIÓN DE COMPARATIVAS DE RÉCORDS (SBD) ---
+                    // --- NUEVO: CARGAR RÉCORDS FILTRADOS DE LA CATEGORÍA SELECCIONADA ---
                     const maxSq = data.estadisticas.max_squat || sq || 100;
                     const maxBp = data.estadisticas.max_bench || bp || 100;
                     const maxDl = data.estadisticas.max_deadlift || dl || 100;
 
+                    // Mostrar etiqueta informativa del filtro activo
+                    const txtSexo = sexo === 'Cualquiera' ? 'Todos' : (sexo === 'M' ? 'Masc' : 'Fem');
+                    const txtCat = categoria === 'Cualquiera' ? 'Absoluto' : `${categoria} kg`;
+                    document.getElementById('label-filtro-activo').textContent = `Filtro: ${txtSexo} (${txtCat})`;
+
+                    // Asignación de valores
                     document.getElementById('comp-sq-user').textContent = `${sq} kg`;
                     document.getElementById('comp-sq-max').textContent = `${maxSq} kg`;
                     document.getElementById('comp-bp-user').textContent = `${bp} kg`;
@@ -624,19 +590,19 @@
                     document.getElementById('comp-dl-user').textContent = `${dl} kg`;
                     document.getElementById('comp-dl-max').textContent = `${maxDl} kg`;
 
-                    // Cálculo del porcentaje del récord y ajuste de barras de progreso
+                    // Cálculo del porcentaje dinámico de progreso respecto al filtro aplicado
                     const percentSq = Math.min(Math.round((sq / maxSq) * 100), 100);
                     const percentBp = Math.min(Math.round((bp / maxBp) * 100), 100);
                     const percentDl = Math.min(Math.round((dl / maxDl) * 100), 100);
 
                     document.getElementById('bar-sq-progress').style.width = `${percentSq}%`;
-                    document.getElementById('label-sq-percent').textContent = `${percentSq}% del récord`;
+                    document.getElementById('label-sq-percent').textContent = `${percentSq}% del récord en tu filtro`;
 
                     document.getElementById('bar-bp-progress').style.width = `${percentBp}%`;
-                    document.getElementById('label-bp-percent').textContent = `${percentBp}% del récord`;
+                    document.getElementById('label-bp-percent').textContent = `${percentBp}% del récord en tu filtro`;
 
                     document.getElementById('bar-dl-progress').style.width = `${percentDl}%`;
-                    document.getElementById('label-dl-percent').textContent = `${percentDl}% del récord`;
+                    document.getElementById('label-dl-percent').textContent = `${percentDl}% del récord en tu filtro`;
 
                     // Listas de atletas
                     if (data.empates.length === 0) {
@@ -670,12 +636,11 @@
             }
         });
 
-        // --- DESCARGAR CROMO ---
         document.getElementById('btn-descargar-cromo').addEventListener('click', function() {
             const cromoElement = document.getElementById('cromo-atleta');
             html2canvas(cromoElement, {
                 backgroundColor: null, 
-                scale: 2,              // Alta definición
+                scale: 2,
                 useCORS: true,
                 logging: false
             }).then(canvas => {
@@ -686,7 +651,6 @@
             });
         });
 
-        // --- FILTRADO DE CATEGORÍAS ---
         const selectSexo = document.getElementById('filtro-sexo');
         const selectCategoria = document.getElementById('filtro-categoria');
         const categoriasMasculinas = ["-59", "-66", "-74", "-83", "-93", "-105", "-120", "120+"];
