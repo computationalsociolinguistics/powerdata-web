@@ -20,7 +20,6 @@
             100% { transform: rotate(360deg); }
         }
         .cromo-holografico {
-            background: linear-gradient(135deg, #151522 0%, #0c0c14 50%, #1e112a 100%);
             border: 3px solid #eab308;
             box-shadow: 0 0 25px rgba(234, 179, 8, 0.2);
         }
@@ -143,55 +142,60 @@
         <!-- SECCIÓN DE RESULTADOS -->
         <div id="seccion-resultados" class="hidden space-y-10">
 
-            <!-- GENERADOR DE CROMO PARA REDES -->
+            <!-- GENERADOR DE CROMO PARA REDES (Optimizado contra solapamientos y deformaciones de fuentes) -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl">
                 <div class="md:col-span-5 flex flex-col items-center">
                     
-                    <!-- EL CROMO -->
-                    <div id="cromo-atleta" class="cromo-holografico w-[300px] h-[430px] rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
-                        <div class="absolute -top-20 -left-20 w-44 h-44 bg-purple-600/20 rounded-full blur-3xl"></div>
-                        <div class="absolute -bottom-20 -right-20 w-44 h-44 bg-yellow-500/10 rounded-full blur-3xl"></div>
+                    <!-- EL CROMO OPTIMIZADO -->
+                    <div id="cromo-atleta" class="cromo-holografico w-[300px] h-[430px] rounded-2xl p-6 relative flex flex-col justify-between select-none" style="background: linear-gradient(135deg, #151522 0%, #0c0c14 60%, #1a0f24 100%);">
                         
-                        <div class="relative z-10">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <span class="text-[10px] tracking-widest text-yellow-500 font-bold uppercase">POWERLIFTER</span>
-                                    <h4 id="cromo-nombre" class="text-xl font-black text-white leading-tight truncate max-w-[180px]">ATLETA</h4>
+                        <!-- Encabezado del Cromo -->
+                        <div class="relative z-10 w-full">
+                            <div class="flex justify-between items-start gap-2">
+                                <div class="min-w-0 flex-1">
+                                    <span class="text-[10px] tracking-widest text-yellow-500 font-bold uppercase block mb-1">POWERLIFTER</span>
+                                    <!-- Tipografía del sistema y altura de línea controlada para que el nombre de usuario nunca se amontone -->
+                                    <h4 id="cromo-nombre" class="text-xl font-bold text-white leading-tight truncate pr-1" style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; letter-spacing: -0.02em;">ATLETA</h4>
                                 </div>
-                                <span id="cromo-sex-badge" class="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full">CAT</span>
+                                <span id="cromo-sex-badge" class="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-bold px-2.5 py-1 rounded-md shrink-0">CAT</span>
                             </div>
-                            <div class="flex gap-2 items-center mt-2 text-xs text-gray-400">
-                                <span>BW: <b id="cromo-bw" class="text-white">--kg</b></span>
-                                <span>|</span>
-                                <span>Clase: <b id="cromo-class" class="text-white">--</b></span>
-                            </div>
-                        </div>
-
-                        <div class="text-center relative z-10 my-4">
-                            <span class="text-[10px] tracking-widest text-gray-400 font-semibold block mb-1">TOTAL SBD</span>
-                            <div class="text-5xl font-black text-yellow-500 tracking-tight" id="cromo-total">0.0 <span class="text-lg">kg</span></div>
-                            <div class="inline-block mt-3 bg-white/5 border border-white/10 px-3 py-1 rounded-full">
-                                <span class="text-[10px] text-gray-400">Percentil de Fuerza: <strong id="cromo-percentil" class="text-yellow-400">--%</strong></span>
+                            <div class="flex gap-2 items-center mt-3 text-xs text-gray-400" style="font-family: system-ui, sans-serif;">
+                                <span>BW: <b id="cromo-bw" class="text-white font-semibold">--kg</b></span>
+                                <span class="text-gray-700">|</span>
+                                <span>Clase: <b id="cromo-class" class="text-white font-semibold">--</b></span>
                             </div>
                         </div>
 
-                        <div class="border-t border-gray-800/80 pt-4 relative z-10">
-                            <div class="grid grid-cols-3 text-center gap-1">
+                        <!-- Total Central -->
+                        <div class="text-center relative z-10 my-auto py-2">
+                            <span class="text-[10px] tracking-wider text-gray-400 font-semibold uppercase block mb-1">TOTAL SBD</span>
+                            <div class="text-5xl font-bold text-yellow-500 tracking-tight flex items-baseline justify-center gap-1" style="font-family: system-ui, sans-serif;">
+                                <span id="cromo-total-num">0.0</span>
+                                <span class="text-lg font-medium text-yellow-500/80">kg</span>
+                            </div>
+                            <div class="inline-block mt-3 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full">
+                                <span class="text-[10px] text-gray-300 font-medium">Percentil de Fuerza: <strong id="cromo-percentil" class="text-yellow-400 font-bold">--%</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Bloque de Movimientos SBD e Información de Autoría -->
+                        <div class="border-t border-gray-800/80 pt-4 relative z-10 w-full">
+                            <div class="grid grid-cols-3 text-center gap-2">
                                 <div class="bg-white/5 py-2 rounded-lg border border-white/5">
-                                    <span class="text-[9px] text-green-500 font-bold block">SQUAT</span>
-                                    <span id="cromo-sq" class="text-sm font-black text-white">0 kg</span>
+                                    <span class="text-[9px] text-green-500 font-bold block tracking-wider uppercase">SQUAT</span>
+                                    <span id="cromo-sq" class="text-sm font-bold text-white block mt-0.5" style="font-family: system-ui, sans-serif;">0 kg</span>
                                 </div>
                                 <div class="bg-white/5 py-2 rounded-lg border border-white/5">
-                                    <span class="text-[9px] text-blue-400 font-bold block">BENCH</span>
-                                    <span id="cromo-bp" class="text-sm font-black text-white">0 kg</span>
+                                    <span class="text-[9px] text-blue-400 font-bold block tracking-wider uppercase">BENCH</span>
+                                    <span id="cromo-bp" class="text-sm font-bold text-white block mt-0.5" style="font-family: system-ui, sans-serif;">0 kg</span>
                                 </div>
                                 <div class="bg-white/5 py-2 rounded-lg border border-white/5">
-                                    <span class="text-[9px] text-red-500 font-bold block">DEADLIFT</span>
-                                    <span id="cromo-dl" class="text-sm font-black text-white">0 kg</span>
+                                    <span class="text-[9px] text-red-500 font-bold block tracking-wider uppercase">DEADLIFT</span>
+                                    <span id="cromo-dl" class="text-sm font-bold text-white block mt-0.5" style="font-family: system-ui, sans-serif;">0 kg</span>
                                 </div>
                             </div>
-                            <!-- Firma de Copyright -->
-                            <div class="text-center mt-4 text-[9px] font-semibold tracking-wider text-yellow-500/40 uppercase">
+                            <!-- Firma de Copyright Estable -->
+                            <div class="text-center mt-4 text-[9px] font-semibold tracking-wider text-yellow-500/40 uppercase" style="font-family: system-ui, sans-serif;">
                                 <i class="fa-solid fa-copyright"></i> Damián Morales Sánchez
                             </div>
                         </div>
@@ -528,7 +532,7 @@
 
                     // --- CARGAR DATOS EN EL CROMO ---
                     document.getElementById('cromo-nombre').textContent = nombre;
-                    document.getElementById('cromo-total').innerHTML = `${total} <span class="text-lg">kg</span>`;
+                    document.getElementById('cromo-total-num').textContent = total;
                     document.getElementById('cromo-bw').textContent = `${bodyweight}kg`;
                     document.getElementById('cromo-class').textContent = categoria !== 'Cualquiera' ? categoria : 'Open';
                     document.getElementById('cromo-percentil').textContent = `${perc}%`;
@@ -539,13 +543,13 @@
                     const sexBadge = document.getElementById('cromo-sex-badge');
                     if (sexo === 'M') {
                         sexBadge.textContent = 'MASC';
-                        sexBadge.className = "bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full";
+                        sexBadge.className = "bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-bold px-2.5 py-1 rounded-md shrink-0";
                     } else if (sexo === 'F') {
                         sexBadge.textContent = 'FEM';
-                        sexBadge.className = "bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full";
+                        sexBadge.className = "bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-bold px-2.5 py-1 rounded-md shrink-0";
                     } else {
                         sexBadge.textContent = 'OPEN';
-                        sexBadge.className = "bg-gray-500/10 text-gray-400 border border-gray-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full";
+                        sexBadge.className = "bg-gray-500/10 text-gray-400 border border-gray-500/20 text-[10px] font-bold px-2.5 py-1 rounded-md shrink-0";
                     }
 
                     // Listas de atletas
@@ -580,13 +584,14 @@
             }
         });
 
-        // --- DESCARGAR CROMO (html2canvas) ---
+        // --- DESCARGAR CROMO (html2canvas con configuraciones de renderizado limpio y nítido) ---
         document.getElementById('btn-descargar-cromo').addEventListener('click', function() {
             const cromoElement = document.getElementById('cromo-atleta');
             html2canvas(cromoElement, {
-                backgroundColor: '#0c0c14',
-                scale: 2,
-                useCORS: true
+                backgroundColor: null, 
+                scale: 2,              // Fuerza la alta resolución para que las fuentes no se pixelen
+                useCORS: true,
+                logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `cromo_powerdata_${document.getElementById('nombre-atleta').value || 'atleta'}.png`;
