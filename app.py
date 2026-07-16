@@ -21,72 +21,87 @@ def buscar():
     try:
         datos = request.get_json()
         total_usuario = float(datos.get('total', 0))
+        sexo = datos.get('sexo', 'Cualquiera')
+        categoria = datos.get('categoria', 'Cualquiera')
+        nivel_camp = datos.get('nivel', 'Cualquiera')
 
-        # CONSULTA 1: Los 10 rivales con total igual o superior (excluyendo el total exacto si queremos diferenciarlos, 
-        # o simplemente estrictamente superiores para no duplicar. Aquí usaremos > para los rivales y = para los exactos).
-        query_rivales = """
+        # --- CONSTRUCCIÓN DINÁMICA DE LA CONSULTA SQL ---
+        condiciones = []
+        parametros = {"total": total_usuario}
+
+        # Filtro de Sexo
+        if sexo != 'Cualquiera':
+            condiciones.append("a.sexo = :sexo")
+            parametros["sexo"] = sexo
+
+        # Filtro de Categoría de Peso
+        if categoria != 'Cualquiera':
+            condiciones.append("r.weight_class = :categoria")
+            parametros["categoria"] = categoria
+
+        # Filtro de Nivel de Campeonato
+        if nivel_camp != 'Cualquiera':
+            condiciones.append("c.nivel = :nivel")
+            parametros["nivel"] = int(nivel_camp)
+
+        # Unir condiciones adicionales si existen
+        str_condiciones = " AND " + " AND ".join(condiciones) if condiciones else ""
+
+        # CONSULTA 1: Los 10 rivales con total estrictamente superior
+        query_rivales = f"""
             SELECT a.nombre, a.sexo, r.bodyweight, r.weight_class, 
-                   r.best_squat, r.best_bench, r.best_deadlift, r.total
+                   r.best_squat, r.best_bench, r.best_deadlift, r.total,
+                   c.nombre as meet_name, c.nivel
             FROM resultados r
             JOIN atletas a ON r.id_atleta = a.id_atleta
-            WHERE r.total > :total
+            JOIN campeonatos c ON r.id_campeonato = c.id_campeonato
+            WHERE r.total > :total {str_condiciones}
             ORDER BY r.total ASC 
             LIMIT 10
         """
 
-        # CONSULTA 2: Todos los atletas que tienen EXACTAMENTE tu mismo total
-        query_exactos = """
+        # CONSULTA 2: Todos los atletas que tienen exactamente tu mismo total
+        query_exactos = f"""
             SELECT a.nombre, a.sexo, r.bodyweight, r.weight_class, 
-                   r.best_squat, r.best_bench, r.best_deadlift, r.total
+                   r.best_squat, r.best_bench, r.best_deadlift, r.total,
+                   c.nombre as meet_name, c.nivel
             FROM resultados r
             JOIN atletas a ON r.id_atleta = a.id_atleta
-            WHERE r.total = :total
+            JOIN campeonatos c ON r.id_campeonato = c.id_campeonato
+            WHERE r.total = :total {str_condiciones}
             ORDER BY r.bodyweight ASC
         """
-        
-        parametros = {"total": total_usuario}
 
         with engine.connect() as conn:
-            # Ejecutar rivales superiores
+            # Ejecutar consulta de rivales
             res_rivales = conn.execute(text(query_rivales), parametros)
             rivales_filas = [dict(zip(res_rivales.keys(), row)) for row in res_rivales]
 
-            # Ejecutar empates exactos
+            # Ejecutar consulta de empates exactos
             res_exactos = conn.execute(text(query_exactos), parametros)
             exactos_filas = [dict(zip(res_exactos.keys(), row)) for row in res_exactos]
 
-        # Formatear lista de rivales
-        rivales_lista = []
-        for f in rivales_filas:
-            rivales_lista.append({
-                "nombre": f['nombre'],
-                "sexo": f['sexo'],
-                "bodyweight": float(f['bodyweight']),
-                "weight_class": f['weight_class'],
-                "sentadilla": float(f['best_squat']),
-                "banca": float(f['best_bench']),
-                "peso_muerto": float(f['best_deadlift']),
-                "total": float(f['total'])
-            })
-
-        # Formatear lista de empates exactos
-        exactos_lista = []
-        for f in exactos_filas:
-            exactos_lista.append({
-                "nombre": f['nombre'],
-                "sexo": f['sexo'],
-                "bodyweight": float(f['bodyweight']),
-                "weight_class": f['weight_class'],
-                "sentadilla": float(f['best_squat']),
-                "banca": float(f['best_bench']),
-                "peso_muerto": float(f['best_deadlift']),
-                "total": float(f['total'])
-            })
+        def mapear_resultados(filas):
+            lista = []
+            for f in filas:
+                lista.append({
+                    "nombre": f['nombre'],
+                    "sexo": f['sexo'],
+                    "bodyweight": float(f['bodyweight']),
+                    "weight_class": f['weight_class'],
+                    "sentadilla": float(f['best_squat']),
+                    "banca": float(f['best_bench']),
+                    "peso_muerto": float(f['best_deadlift']),
+                    "total": float(f['total']),
+                    "campeonato": f['meet_name'],
+                    "nivel": f['nivel']
+                })
+            return lista
 
         return jsonify({
             "success": True,
-            "rivales": rivales_lista,
-            "empates": exactos_lista
+            "rivales": mapear_resultados(rivales_filas),
+            "empates": mapear_resultados(exactos_filas)
         })
 
     except Exception as e:
