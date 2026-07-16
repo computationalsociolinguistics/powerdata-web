@@ -36,14 +36,14 @@
     <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-8">
         <div class="text-center mb-8">
             <h2 class="text-3xl font-extrabold md:text-4xl text-white mb-2">Compara tus marcas de Fuerza</h2>
-            <p class="text-gray-400 text-sm md:text-base">Introduce tus marcas, filtra según tu categoría y encuentra a tus rivales.</p>
+            <p class="text-gray-400 text-sm md:text-base">Introduce tus levantamientos, aplica filtros específicos y encuentra a tus rivales.</p>
         </div>
 
         <!-- Formulario e Inputs de búsqueda -->
         <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl mb-8">
             <form id="form-buscador" class="space-y-6">
                 
-                <!-- 1. BLOQUE DE LEVANTAMIENTOS (Calculador Automático) -->
+                <!-- 1. BLOQUE DE LEVANTAMIENTOS (Suma automatizada) -->
                 <div>
                     <h4 class="text-sm font-bold text-yellow-500 uppercase tracking-wider mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-calculator"></i> 1. Introduce tus Marcas (SBD)
@@ -182,7 +182,7 @@
 
     <!-- Lógica JavaScript -->
     <script>
-        // --- 1. LÓGICA DE LA CALCULADORA SBD AUTOMÁTICA ---
+        // --- 1. CALCULADORA SBD AUTOMÁTICA ---
         const inputsMarca = document.querySelectorAll('.input-marca');
         const inputTotal = document.getElementById('total');
 
@@ -196,7 +196,7 @@
             });
         });
 
-        // --- 2. LOGICA DE RENDERIZADO DE INSIGNIA DE NIVEL ---
+        // --- 2. RENDERIZADO DE LA INSIGNIA DEL CAMPEONATO ---
         function obtenerInsigniaNivel(nivel) {
             let color = "bg-gray-800 text-gray-300 border-gray-700";
             let texto = `AEP${nivel}`;
@@ -238,7 +238,7 @@
                 </div>`;
         }
 
-        // --- 3. ENVÍO DEL FORMULARIO ---
+        // --- 3. PROCESAR BÚSQUEDA ---
         document.getElementById('form-buscador').addEventListener('submit', async function(e) {
             e.preventDefault();
             const total = document.getElementById('total').value;
@@ -278,11 +278,11 @@
                     listaExactos.innerHTML = '';
                     listaRivales.innerHTML = '';
 
-                    // Renderizar Empates Exactos
+                    // 1. Renderizar Empates Exactos
                     if (data.empates.length === 0) {
                         listaExactos.innerHTML = `
                             <div class="col-span-1 md:col-span-2 text-center py-6 bg-[#12121a] border border-gray-800 rounded-2xl">
-                                <p class="text-gray-500 text-sm">Nadie con los filtros aplicados tiene un total exacto de ${total} kg.</p>
+                                <p class="text-gray-500 text-sm">Ningún atleta con estos filtros aplicados comparte tu marca exacta de ${total} kg.</p>
                             </div>`;
                     } else {
                         data.empates.forEach(atleta => {
@@ -290,11 +290,11 @@
                         });
                     }
 
-                    // Renderizar Rivales Superiores
+                    // 2. Renderizar Rivales Superiores
                     if (data.rivales.length === 0) {
                         listaRivales.innerHTML = `
                             <div class="col-span-1 md:col-span-2 text-center py-6 bg-[#12121a] border border-gray-800 rounded-2xl">
-                                <p class="text-gray-500 text-sm">🔥 No hay rivales por encima con tus criterios de búsqueda. ¡Eres el número uno!</p>
+                                <p class="text-gray-500 text-sm">🔥 ¡No hay rivales por encima con tus criterios de búsqueda! Eres el número uno.</p>
                             </div>`;
                     } else {
                         data.rivales.forEach(atleta => {

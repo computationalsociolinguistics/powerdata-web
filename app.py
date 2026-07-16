@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 database_url = os.getenv("DATABASE_URL")
 
+# Corrección para compatibilidad de PostgreSQL en Render/Heroku
 if database_url and database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
 
@@ -29,25 +30,26 @@ def buscar():
         condiciones = []
         parametros = {"total": total_usuario}
 
-        # Filtro de Sexo
+        # 1. Filtro de Sexo
         if sexo != 'Cualquiera':
             condiciones.append("a.sexo = :sexo")
             parametros["sexo"] = sexo
 
-        # Filtro de Categoría de Peso
+        # 2. Filtro de Categoría de Peso Inteligente (Limpia '-' y 'kg' de ambos lados)
         if categoria != 'Cualquiera':
-            condiciones.append("r.weight_class = :categoria")
-            parametros["categoria"] = categoria
+            cat_limpia = categoria.replace('-', '').replace('kg', '').strip()
+            condiciones.append("REPLACE(REPLACE(r.weight_class, '-', ''), 'kg', '') = :categoria_limpia")
+            parametros["categoria_limpia"] = cat_limpia
 
-        # Filtro de Nivel de Campeonato
+        # 3. Filtro de Nivel de Campeonato
         if nivel_camp != 'Cualquiera':
             condiciones.append("c.nivel = :nivel")
             parametros["nivel"] = int(nivel_camp)
 
-        # Unir condiciones adicionales si existen
+        # Unir condiciones si existen
         str_condiciones = " AND " + " AND ".join(condiciones) if condiciones else ""
 
-        # CONSULTA 1: Los 10 rivales con total estrictamente superior
+        # CONSULTA 1: Los 10 rivales con total superior
         query_rivales = f"""
             SELECT a.nombre, a.sexo, r.bodyweight, r.weight_class, 
                    r.best_squat, r.best_bench, r.best_deadlift, r.total,
