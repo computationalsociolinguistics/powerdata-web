@@ -10,6 +10,15 @@
         body {
             background-color: #0b0b0f;
         }
+        /* Spinner de carga personalizado */
+        .loader {
+            border-top-color: #eab308;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col justify-between font-sans">
@@ -29,80 +38,40 @@
         
         <div class="text-center mb-8">
             <h2 class="text-3xl font-extrabold md:text-4xl text-white mb-2">Compara tus marcas de Fuerza</h2>
-            <p class="text-gray-400 text-sm md:text-base">Introduce tus datos, calcula tus Puntos GL y encuentra rivales en tu categoría.</p>
+            <p class="text-gray-400 text-sm md:text-base">Introduce tus marcas y descubre a tus rivales en la tarima.</p>
         </div>
 
         <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl mb-8">
             <form id="form-buscador" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="total">
-                            Total SBD Levantado (kg)
-                        </label>
-                        <input type="number" step="0.1" id="total" required placeholder="Ej: 520"
-                            class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 text-lg">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="bodyweight">
-                            Tu Peso Corporal (kg)
-                        </label>
-                        <input type="number" step="0.1" id="bodyweight" required placeholder="Ej: 82.5"
-                            class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 text-lg">
-                    </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="total">
+                        Total SBD Levantado (kg)
+                    </label>
+                    <input type="number" step="0.1" id="total" required placeholder="Ej: 520"
+                        class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 text-lg">
                 </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="sexo">
-                            Sexo
-                        </label>
-                        <select id="sexo" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 text-lg">
-                            <option value="M">Masculino (M)</option>
-                            <option value="F">Femenino (F)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="categoria">
-                            Categoría de Peso (IPF)
-                        </label>
-                        <select id="categoria" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 text-lg">
-                            <option value="TODAS">Ver todas las categorías</option>
-                            <option value="-59">Sub -59 kg</option>
-                            <option value="-66">Sub -66 kg</option>
-                            <option value="-74">Sub -74 kg</option>
-                            <option value="-83">Sub -83 kg</option>
-                            <option value="-93">Sub -93 kg</option>
-                            <option value="-105">Sub -105 kg</option>
-                            <option value="-120">Sub -120 kg</option>
-                            <option value="120+">Super +120 kg</option>
-                            <option value="-47">Sub -47 kg (Fem)</option>
-                            <option value="-52">Sub -52 kg (Fem)</option>
-                            <option value="-57">Sub -57 kg (Fem)</option>
-                            <option value="-63">Sub -63 kg (Fem)</option>
-                            <option value="-69">Sub -69 kg (Fem)</option>
-                            <option value="-76">Sub -76 kg (Fem)</option>
-                            <option value="-84">Sub -84 kg (Fem)</option>
-                            <option value="84+">Super +84 kg (Fem)</option>
-                        </select>
-                    </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="bodyweight">
+                        Tu Peso Corporal (kg)
+                    </label>
+                    <input type="number" step="0.1" id="bodyweight" required placeholder="Ej: 82.5"
+                        class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500 text-lg">
                 </div>
 
                 <div class="md:col-span-2 pt-2">
-                    <button type="submit" 
-                        class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-black uppercase py-4 rounded-xl shadow-lg transition duration-200 transform hover:scale-[1.01]">
-                        Calcular y Encontrar Rivales
+                    <button type="submit" id="btn-buscar"
+                        class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-black uppercase py-4 rounded-xl shadow-lg transition duration-200 transform hover:scale-[1.01] flex justify-center items-center gap-3">
+                        <span>Encontrar Rivales</span>
                     </button>
                 </div>
             </form>
         </div>
 
-        <div id="panel-usuario" class="hidden bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-2xl p-6 mb-8 text-center shadow-xl">
-            <h3 class="text-sm font-bold text-yellow-500 uppercase tracking-wider mb-1">Tus Puntos de Rendimiento Relativo</h3>
-            <p id="gl-usuario" class="text-5xl font-black text-white">0.00</p>
-            <p class="text-xs text-gray-400 mt-2">Puntos GL (Fórmula Oficial de Rendimiento IPF)</p>
+        <div id="loader-container" class="hidden flex flex-col items-center justify-center py-12">
+            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-800 h-16 w-16 mb-4"></div>
+            <p class="text-yellow-500 font-bold tracking-wider animate-pulse">BUSCANDO EN LA BASE DE DATOS...</p>
         </div>
 
         <div id="seccion-resultados" class="hidden space-y-4">
@@ -125,81 +94,86 @@
 
             const total = document.getElementById('total').value;
             const bodyweight = document.getElementById('bodyweight').value;
-            const sexo = document.getElementById('sexo').value;
-            const categoria = document.getElementById('categoria').value;
 
-            // Enviar datos al backend de Flask
-            const response = await fetch('/buscar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    total: parseFloat(total),
-                    bodyweight: parseFloat(bodyweight),
-                    sexo: sexo,
-                    categoria: categoria
-                })
-            });
+            const btnBuscar = document.getElementById('btn-buscar');
+            const loaderContainer = document.getElementById('loader-container');
+            const seccionResultados = document.getElementById('seccion-resultados');
+            const listaAtletas = document.getElementById('lista-atletas');
 
-            const data = await response.json();
+            // 1. Mostrar spinner y ocultar resultados anteriores
+            loaderContainer.classList.remove('hidden');
+            seccionResultados.classList.add('hidden');
+            btnBuscar.disabled = true;
+            btnBuscar.classList.add('opacity-50');
 
-            if (data.success) {
-                // Mostrar Puntos GL del Usuario
-                const panelUsuario = document.getElementById('panel-usuario');
-                const glLabel = document.getElementById('gl-usuario');
-                glLabel.innerText = data.puntos_usuario + " GL";
-                panelUsuario.classList.remove('hidden');
+            try {
+                // Enviar datos al backend de Flask
+                const response = await fetch('/buscar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        total: parseFloat(total),
+                        bodyweight: parseFloat(bodyweight)
+                    })
+                });
 
-                // Renderizar Tarjetas de Atletas Encontrados
-                const seccionResultados = document.getElementById('seccion-resultados');
-                const listaAtletas = document.getElementById('lista-atletas');
-                listaAtletas.innerHTML = ''; // Limpiar anteriores
+                const data = await response.json();
 
-                if (data.atletas.length === 0) {
-                    listaAtletas.innerHTML = `
-                        <div class="col-span-1 md:col-span-2 text-center py-8 bg-[#12121a] border border-gray-800 rounded-2xl">
-                            <p class="text-gray-400">🔥 ¡Eres imparable! No se encontraron atletas con un total igual o superior en esta categoría.</p>
-                        </div>
-                    `;
-                } else {
-                    data.atletas.forEach(atleta => {
-                        const tarjeta = `
-                            <div class="bg-[#12121a] border border-gray-800 rounded-xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between">
-                                <div class="absolute top-0 left-0 w-1 h-full ${atleta.sexo === 'M' ? 'bg-blue-500' : 'bg-pink-500'}"></div>
-                                
-                                <div>
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h4 class="font-bold text-white text-md tracking-wide pl-2">${atleta.nombre}</h4>
-                                        <span class="text-xs bg-[#181824] px-2.5 py-1 rounded-md text-gray-400 border border-gray-700 font-semibold">
-                                            Cat: ${atleta.weight_class}
-                                        </span>
-                                    </div>
-                                    
-                                    <div class="flex items-baseline gap-2 mb-4 pl-2">
-                                        <span class="text-3xl font-black text-yellow-500">${atleta.total} <span class="text-xs font-normal text-gray-400">kg</span></span>
-                                        <span class="text-xs font-semibold text-gray-500">| BW: ${atleta.bodyweight}kg</span>
-                                    </div>
-                                </div>
+                if (data.success) {
+                    listaAtletas.innerHTML = ''; // Limpiar anteriores
 
-                                <div class="border-t border-gray-800/80 pt-3 flex justify-between items-center text-xs">
-                                    <div class="flex gap-3 text-gray-400">
-                                        <span><b class="text-green-500">SQ:</b> ${atleta.sentadilla}k</span>
-                                        <span><b class="text-blue-400">BP:</b> ${atleta.banca}k</span>
-                                        <span><b class="text-red-500">DL:</b> ${atleta.peso_muerto}k</span>
-                                    </div>
-                                    <span class="font-bold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20 text-[10px] uppercase">
-                                        ${atleta.puntos_gl} GL
-                                    </span>
-                                </div>
+                    if (data.atletas.length === 0) {
+                        listaAtletas.innerHTML = `
+                            <div class="col-span-1 md:col-span-2 text-center py-8 bg-[#12121a] border border-gray-800 rounded-2xl">
+                                <p class="text-gray-400">🔥 ¡Eres imparable! No se encontraron atletas con un total igual o superior en la base de datos.</p>
                             </div>
                         `;
-                        listaAtletas.innerHTML += tarjeta;
-                    });
+                    } else {
+                        data.atletas.forEach(atleta => {
+                            const tarjeta = `
+                                <div class="bg-[#12121a] border border-gray-800 rounded-xl p-5 shadow-lg relative overflow-hidden flex flex-col justify-between">
+                                    <div class="absolute top-0 left-0 w-1 h-full ${atleta.sexo === 'M' ? 'bg-blue-500' : 'bg-pink-500'}"></div>
+                                    
+                                    <div>
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h4 class="font-bold text-white text-md tracking-wide pl-2">${atleta.nombre}</h4>
+                                            <span class="text-xs bg-[#181824] px-2.5 py-1 rounded-md text-gray-400 border border-gray-700 font-semibold">
+                                                Cat: ${atleta.weight_class}
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="flex items-baseline gap-2 mb-4 pl-2">
+                                            <span class="text-3xl font-black text-yellow-500">${atleta.total} <span class="text-xs font-normal text-gray-400">kg</span></span>
+                                            <span class="text-xs font-semibold text-gray-500">| BW: ${atleta.bodyweight}kg</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="border-t border-gray-800/80 pt-3 flex justify-between items-center text-xs">
+                                        <div class="flex gap-3 text-gray-400">
+                                            <span><b class="text-green-500">SQ:</b> ${atleta.sentadilla}k</span>
+                                            <span><b class="text-blue-400">BP:</b> ${atleta.banca}k</span>
+                                            <span><b class="text-red-500">DL:</b> ${atleta.peso_muerto}k</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            listaAtletas.innerHTML += tarjeta;
+                        });
+                    }
+                    // Mostrar resultados tras la carga exitosa
+                    seccionResultados.classList.remove('hidden');
+                } else {
+                    alert("Ocurrió un error al procesar la búsqueda: " + data.error);
                 }
-                seccionResultados.classList.remove('hidden');
-            } else {
-                alert("Ocurrió un error al procesar la búsqueda: " + data.error);
+            } catch (error) {
+                alert("Error de conexión con el servidor.");
+            } finally {
+                // Ocultar spinner y restaurar botón
+                loaderContainer.classList.add('hidden');
+                btnBuscar.disabled = false;
+                btnBuscar.classList.remove('opacity-50');
             }
         });
     </script>
