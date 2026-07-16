@@ -1,4 +1,5 @@
 import os
+import math
 from flask import Flask, render_template, request, jsonify
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
@@ -35,7 +36,7 @@ def buscar():
             condiciones.append("a.sexo = :sexo")
             parametros["sexo"] = sexo
 
-        # 2. Filtro de Categoría de Peso Inteligente (Limpia '-' y 'kg' de ambos lados)
+        # 2. Filtro de Categoría de Peso Inteligente (Limpia '-' y 'kg')
         if categoria != 'Cualquiera':
             cat_limpia = categoria.replace('-', '').replace('kg', '').strip()
             condiciones.append("REPLACE(REPLACE(r.weight_class, '-', ''), 'kg', '') = :categoria_limpia")
@@ -74,6 +75,16 @@ def buscar():
             ORDER BY r.bodyweight ASC
         """
 
+        # CONSULTA 3: Obtener promedio y desviación estándar para el gráfico de campana
+        # (Si no hay filtros específicos de categoría, lo calcula del universo completo de competidores)
+        query_estadisticas = f"""
+            SELECT AVG(r.total) as media, STDDEV(r.total) as desviacion
+            FROM resultados r
+            JOIN atletas a ON r.id_atleta = a.id_atleta
+            JOIN campeonatos c ON r.id_campeonato = c.id_campeonato
+            WHERE 1=1 {str_condiciones}
+        """
+
         with engine.connect() as conn:
             # Ejecutar consulta de rivales
             res_rivales = conn.execute(text(query_rivales), parametros)
@@ -82,6 +93,11 @@ def buscar():
             # Ejecutar consulta de empates exactos
             res_exactos = conn.execute(text(query_exactos), parametros)
             exactos_filas = [dict(zip(res_exactos.keys(), row)) for row in res_exactos]
+
+            # Ejecutar estadísticas
+            res_stats = conn.execute(text(query_estadisticas), parametros).fetchone()
+            media = float(res_stats[0]) if res_stats and res_stats[0] is not None else 0.0
+            desviacion = float(res_stats[1]) if res_stats and res_stats[1] is not None else 0.0
 
         def mapear_resultados(filas):
             lista = []
@@ -103,7 +119,11 @@ def buscar():
         return jsonify({
             "success": True,
             "rivales": mapear_resultados(rivales_filas),
-            "empates": mapear_resultados(exactos_filas)
+            "empates": mapear_resultados(exactos_filas),
+            "estadisticas": {
+                "media": media,
+                "desviacion": desviacion if desviacion > 0 else 50.0  # fallback por si acaso
+            }
         })
 
     except Exception as e:

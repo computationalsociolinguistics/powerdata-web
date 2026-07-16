@@ -6,6 +6,7 @@
     <title>Powerlifting Matcher</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { background-color: #0b0b0f; }
         .loader {
@@ -20,7 +21,6 @@
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col justify-between font-sans">
 
-    <!-- Encabezado -->
     <header class="border-b border-gray-800 bg-[#0f0f15] py-5 px-4 shadow-lg">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-black tracking-wider text-yellow-500 flex items-center gap-2">
@@ -32,18 +32,15 @@
         </div>
     </header>
 
-    <!-- Contenido Principal -->
     <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-8">
         <div class="text-center mb-8">
             <h2 class="text-3xl font-extrabold md:text-4xl text-white mb-2">Compara tus marcas de Fuerza</h2>
             <p class="text-gray-400 text-sm md:text-base">Introduce tus levantamientos, aplica filtros específicos y encuentra a tus rivales.</p>
         </div>
 
-        <!-- Formulario e Inputs de búsqueda -->
         <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl mb-8">
             <form id="form-buscador" class="space-y-6">
                 
-                <!-- 1. BLOQUE DE LEVANTAMIENTOS (Suma automatizada) -->
                 <div>
                     <h4 class="text-sm font-bold text-yellow-500 uppercase tracking-wider mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-calculator"></i> 1. Introduce tus Marcas (SBD)
@@ -65,7 +62,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                    <!-- Total Automático -->
                     <div>
                         <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="total">
                             Total Calculado (kg)
@@ -73,7 +69,6 @@
                         <input type="number" step="0.1" id="total" readonly required placeholder="0.0"
                             class="w-full bg-[#15151f] border border-yellow-500/30 rounded-xl px-4 py-3 text-yellow-400 font-extrabold focus:outline-none text-xl cursor-not-allowed">
                     </div>
-                    <!-- Peso Corporal -->
                     <div>
                         <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2" for="bodyweight">
                             Tu Peso Corporal (kg)
@@ -83,13 +78,11 @@
                     </div>
                 </div>
 
-                <!-- 2. BLOQUE DE FILTROS AVANZADOS -->
                 <div class="border-t border-gray-800/80 pt-5">
                     <h4 class="text-sm font-bold text-yellow-500 uppercase tracking-wider mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-filter"></i> 2. Filtros de Búsqueda
                     </h4>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <!-- Filtro Sexo -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-400 mb-1" for="filtro-sexo">Sexo</label>
                             <select id="filtro-sexo" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
@@ -98,15 +91,12 @@
                                 <option value="F">Femenino (F)</option>
                             </select>
                         </div>
-                        <!-- Filtro Categoría -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-400 mb-1" for="filtro-categoria">Categoría de Peso</label>
                             <select id="filtro-categoria" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                                 <option value="Cualquiera">Cualquier Categoría</option>
-                                <!-- Se rellenará dinámicamente mediante JS -->
                             </select>
                         </div>
-                        <!-- Filtro Nivel -->
                         <div>
                             <label class="block text-xs font-semibold text-gray-400 mb-1" for="filtro-nivel">Nivel de Campeonato</label>
                             <select id="filtro-nivel" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
@@ -128,45 +118,57 @@
             </form>
         </div>
 
-        <!-- Loader / Spinner de Carga -->
         <div id="loader-container" class="hidden flex flex-col items-center justify-center py-12">
             <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-800 h-16 w-16 mb-4"></div>
             <p class="text-yellow-500 font-bold tracking-wider animate-pulse text-sm">PROCESANDO DATOS EN TIEMPO REAL...</p>
         </div>
 
-        <!-- SECCIÓN DE RESULTADOS -->
         <div id="seccion-resultados" class="hidden space-y-10">
             
-            <!-- BLOQUE 1: Empates Exactos -->
+            <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-chart-area text-yellow-500"></i> Gráfico de Distribución (Tu Nivel)
+                        </h3>
+                        <p class="text-xs text-gray-400 mt-0.5">Cómo se compara tu fuerza respecto al resto de atletas de tu filtro.</p>
+                    </div>
+                    <div class="bg-[#181824] border border-gray-800 px-4 py-2 rounded-xl flex items-center gap-3">
+                        <span class="text-xs text-gray-400">Percentil Estimado:</span>
+                        <span id="percentil-badge" class="text-xl font-black text-yellow-500">-- %</span>
+                    </div>
+                </div>
+                <div class="relative w-full h-64">
+                    <canvas id="graficoDistribucion"></canvas>
+                </div>
+            </div>
+            
             <div>
                 <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
                     <i class="fa-solid fa-equals text-yellow-500"></i> Atletas con tu mismo Total (<span id="total-exacto-label"></span> kg):
                 </h3>
                 <div id="lista-exactos" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Cargados dinámicamente -->
-                </div>
+                    </div>
             </div>
 
-            <!-- BLOQUE 2: Rivales Superiores -->
             <div>
                 <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
                     <i class="fa-solid fa-arrow-trend-up text-yellow-500"></i> Siguientes 10 rivales a batir (Total Superior):
                 </h3>
                 <div id="lista-rivales" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Cargados dinámicamente -->
-                </div>
+                    </div>
             </div>
 
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="border-t border-gray-900 bg-[#07070a] py-6 text-center text-xs text-gray-600">
         <p>&copy; 2026 PowerData Match. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Lógica JavaScript -->
     <script>
+        let distribucionChart = null; // Instancia global para evitar duplicados al redibujar
+
         // --- 1. CALCULADORA SBD AUTOMÁTICA ---
         const inputsMarca = document.querySelectorAll('.input-marca');
         const inputTotal = document.getElementById('total');
@@ -181,7 +183,95 @@
             });
         });
 
-        // --- 2. RENDERIZADO DE LA INSIGNIA DEL CAMPEONATO ---
+        // --- 2. CÁLCULO DE PERCENTIL (Fórmula matemática de distribución acumulativa) ---
+        function calcularPercentil(x, media, desviacion) {
+            if (desviacion === 0) return 50;
+            const z = (x - media) / desviacion;
+            // Función de error de aproximación para la CDF normal estándar
+            const t = 1 / (1 + 0.2316419 * Math.abs(z));
+            const d = 0.3989423 * Math.exp(-z * z / 2);
+            let p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            if (z > 0) p = 1 - p;
+            return Math.round(p * 100);
+        }
+
+        // --- 3. DIBUJAR CAMPANA DE GAUSS CON CHART.JS ---
+        function renderizarGraficoCampana(totalUsuario, media, desviacion) {
+            const ctx = document.getElementById('graficoDistribucion').getContext('2d');
+            
+            // Si ya existe un gráfico anterior, lo destruimos para limpiar memoria y animaciones
+            if (distribucionChart) {
+                distribucionChart.destroy();
+            }
+
+            // Generar los puntos de datos de la campana
+            const dataPuntos = [];
+            const labels = [];
+            const minX = media - (3 * desviacion);
+            const maxX = media + (3 * desviacion);
+            const step = (maxX - minX) / 40; // 40 divisiones para una curva fluida
+
+            for (let x = minX; x <= maxX; x += step) {
+                // Ecuación de la densidad de probabilidad normal (Campana)
+                const y = (1 / (desviacion * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - media) / desviacion, 2));
+                dataPuntos.push({x: Math.round(x), y: y});
+                labels.push(Math.round(x));
+            }
+
+            // Buscar el punto más cercano de la curva para colocar el marcador del usuario
+            const marcadorUsuario = {
+                x: totalUsuario,
+                y: (1 / (desviacion * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((totalUsuario - media) / desviacion, 2))
+            };
+
+            distribucionChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'Curva de Distribución',
+                            data: dataPuntos,
+                            borderColor: '#3b82f6', // Azul tecnológico para la curva
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2,
+                            showLine: true,
+                            fill: true,
+                            pointRadius: 0, // Ocultar los puntos para ver solo la línea fluida
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Tus Marcas',
+                            data: [marcadorUsuario],
+                            backgroundColor: '#eab308', // Amarillo para el punto del usuario
+                            borderColor: '#ffffff',
+                            borderWidth: 2,
+                            pointRadius: 8, // Punto grande y brillante
+                            pointHoverRadius: 10
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            grid: { color: '#1f2937' },
+                            ticks: { color: '#9ca3af', font: { size: 10 } },
+                            title: { display: true, text: 'Total Levantado (kg)', color: '#9ca3af', font: { size: 11, weight: 'bold' } }
+                        },
+                        y: {
+                            display: false // No es necesario el eje Y (densidad) para entender el gráfico de nivel
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- 4. RENDERIZADO DE LA INSIGNIA DEL CAMPEONATO ---
         function obtenerInsigniaNivel(nivel) {
             let color = "bg-gray-800 text-gray-300 border-gray-700";
             let texto = `AEP${nivel}`;
@@ -223,7 +313,7 @@
                 </div>`;
         }
 
-        // --- 3. PROCESAR BÚSQUEDA ---
+        // --- 5. PROCESAR BÚSQUEDA ---
         document.getElementById('form-buscador').addEventListener('submit', async function(e) {
             e.preventDefault();
             const total = document.getElementById('total').value;
@@ -263,7 +353,16 @@
                     listaExactos.innerHTML = '';
                     listaRivales.innerHTML = '';
 
-                    // 1. Renderizar Empates Exactos
+                    // A. Renderizar Campana y Percentil
+                    if (data.estadisticas.media > 0) {
+                        const perc = calcularPercentil(parseFloat(total), data.estadisticas.media, data.estadisticas.desviacion);
+                        document.getElementById('percentil-badge').textContent = `${perc}%`;
+                        renderizarGraficoCampana(parseFloat(total), data.estadisticas.media, data.estadisticas.desviacion);
+                    } else {
+                        document.getElementById('percentil-badge').textContent = `100%`;
+                    }
+
+                    // B. Renderizar Empates Exactos
                     if (data.empates.length === 0) {
                         listaExactos.innerHTML = `
                             <div class="col-span-1 md:col-span-2 text-center py-6 bg-[#12121a] border border-gray-800 rounded-2xl">
@@ -275,7 +374,7 @@
                         });
                     }
 
-                    // 2. Renderizar Rivales Superiores
+                    // C. Renderizar Rivales Superiores
                     if (data.rivales.length === 0) {
                         listaRivales.innerHTML = `
                             <div class="col-span-1 md:col-span-2 text-center py-6 bg-[#12121a] border border-gray-800 rounded-2xl">
@@ -300,7 +399,7 @@
             }
         });
 
-        // --- 4. FILTRADO DINÁMICO DE CATEGORÍAS POR SEXO ---
+        // --- 6. FILTRADO DINÁMICO DE CATEGORÍAS POR SEXO ---
         const selectSexo = document.getElementById('filtro-sexo');
         const selectCategoria = document.getElementById('filtro-categoria');
 
@@ -309,11 +408,8 @@
 
         function actualizarCategorias() {
             const sexoSeleccionado = selectSexo.value;
-            
-            // Guardamos la selección previa para intentar mantenerla si coincide
             const seleccionPrevia = selectCategoria.value;
 
-            // Limpiamos las opciones actuales
             selectCategoria.innerHTML = '<option value="Cualquiera">Cualquier Categoría</option>';
 
             let categoriasAMostrar = [];
@@ -323,11 +419,9 @@
             } else if (sexoSeleccionado === "F") {
                 categoriasAMostrar = categoriasFemeninas;
             } else {
-                // Si elige "Todos los Sexos", mostramos la combinación completa de ambas
                 categoriasAMostrar = [...categoriasFemeninas, ...categoriasMasculinas];
             }
 
-            // Crear y añadir los nuevos elementos del select
             categoriasAMostrar.forEach(cat => {
                 const opt = document.createElement('option');
                 opt.value = cat;
@@ -335,13 +429,11 @@
                 selectCategoria.appendChild(opt);
             });
 
-            // Restaurar la selección si sigue siendo una opción válida
             if (categoriasAMostrar.includes(seleccionPrevia)) {
                 selectCategoria.value = seleccionPrevia;
             }
         }
 
-        // Ejecutar al iniciar la página y cada vez que cambie el sexo
         selectSexo.addEventListener('change', actualizarCategorias);
         actualizarCategorias();
     </script>
