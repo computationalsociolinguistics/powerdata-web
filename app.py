@@ -66,8 +66,12 @@ def buscar():
             ORDER BY r.bodyweight ASC
         """
 
+        # NUEVO: Obtenemos también las medias individuales de S, B y D
         query_estadisticas = f"""
-            SELECT AVG(r.total) as media, STDDEV(r.total) as desviacion
+            SELECT AVG(r.total) as media, STDDEV(r.total) as desviacion,
+                   AVG(r.best_squat) as avg_squat,
+                   AVG(r.best_bench) as avg_bench,
+                   AVG(r.best_deadlift) as avg_deadlift
             FROM resultados r
             JOIN atletas a ON r.id_atleta = a.id_atleta
             JOIN campeonatos c ON r.id_campeonato = c.id_campeonato
@@ -84,6 +88,9 @@ def buscar():
             res_stats = conn.execute(text(query_estadisticas), parametros).fetchone()
             media = float(res_stats[0]) if res_stats and res_stats[0] is not None else 0.0
             desviacion = float(res_stats[1]) if res_stats and res_stats[1] is not None else 0.0
+            avg_squat = float(res_stats[2]) if res_stats and res_stats[2] is not None else 0.0
+            avg_bench = float(res_stats[3]) if res_stats and res_stats[3] is not None else 0.0
+            avg_deadlift = float(res_stats[4]) if res_stats and res_stats[4] is not None else 0.0
 
         def mapear_resultados(filas):
             lista = []
@@ -108,7 +115,10 @@ def buscar():
             "empates": mapear_resultados(exactos_filas),
             "estadisticas": {
                 "media": media,
-                "desviacion": desviacion if desviacion > 0 else 50.0
+                "desviacion": desviacion if desviacion > 0 else 50.0,
+                "avg_squat": avg_squat,
+                "avg_bench": avg_bench,
+                "avg_deadlift": avg_deadlift
             }
         })
 
