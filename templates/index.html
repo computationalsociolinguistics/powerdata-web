@@ -103,22 +103,7 @@
                             <label class="block text-xs font-semibold text-gray-400 mb-1" for="filtro-categoria">Categoría de Peso</label>
                             <select id="filtro-categoria" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                                 <option value="Cualquiera">Cualquier Categoría</option>
-                                <option value="-47">-47 kg</option>
-                                <option value="-52">-52 kg</option>
-                                <option value="-57">-57 kg</option>
-                                <option value="-63">-63 kg</option>
-                                <option value="-69">-69 kg</option>
-                                <option value="-76">-76 kg</option>
-                                <option value="-84">-84 kg</option>
-                                <option value="84+">84+ kg</option>
-                                <option value="-59">-59 kg</option>
-                                <option value="-66">-66 kg</option>
-                                <option value="-74">-74 kg</option>
-                                <option value="-83">-83 kg</option>
-                                <option value="-93">-93 kg</option>
-                                <option value="-105">-105 kg</option>
-                                <option value="-120">-120 kg</option>
-                                <option value="120+">120+ kg</option>
+                                <!-- Se rellenará dinámicamente mediante JS -->
                             </select>
                         </div>
                         <!-- Filtro Nivel -->
@@ -314,6 +299,51 @@
                 btnBuscar.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         });
+
+        // --- 4. FILTRADO DINÁMICO DE CATEGORÍAS POR SEXO ---
+        const selectSexo = document.getElementById('filtro-sexo');
+        const selectCategoria = document.getElementById('filtro-categoria');
+
+        const categoriasMasculinas = ["-59", "-66", "-74", "-83", "-93", "-105", "-120", "120+"];
+        const categoriasFemeninas = ["-47", "-52", "-57", "-63", "-69", "-76", "-84", "84+"];
+
+        function actualizarCategorias() {
+            const sexoSeleccionado = selectSexo.value;
+            
+            // Guardamos la selección previa para intentar mantenerla si coincide
+            const seleccionPrevia = selectCategoria.value;
+
+            // Limpiamos las opciones actuales
+            selectCategoria.innerHTML = '<option value="Cualquiera">Cualquier Categoría</option>';
+
+            let categoriasAMostrar = [];
+
+            if (sexoSeleccionado === "M") {
+                categoriasAMostrar = categoriasMasculinas;
+            } else if (sexoSeleccionado === "F") {
+                categoriasAMostrar = categoriasFemeninas;
+            } else {
+                // Si elige "Todos los Sexos", mostramos la combinación completa de ambas
+                categoriasAMostrar = [...categoriasFemeninas, ...categoriasMasculinas];
+            }
+
+            // Crear y añadir los nuevos elementos del select
+            categoriasAMostrar.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = `${cat} kg`;
+                selectCategoria.appendChild(opt);
+            });
+
+            // Restaurar la selección si sigue siendo una opción válida
+            if (categoriasAMostrar.includes(seleccionPrevia)) {
+                selectCategoria.value = seleccionPrevia;
+            }
+        }
+
+        // Ejecutar al iniciar la página y cada vez que cambie el sexo
+        selectSexo.addEventListener('change', actualizarCategorias);
+        actualizarCategorias();
     </script>
 </body>
 </html>
