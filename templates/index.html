@@ -253,6 +253,63 @@
                 </div>
 
             </div>
+
+            <!-- NUEVA SECCIÓN: COMPARATIVA VISUAL DE RÉCORDS HISTÓRICOS (SBD) -->
+            <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl">
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-crown text-yellow-500"></i> Comparativa frente al Récord Máximo Registrado
+                    </h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Tu marca en cada movimiento comparada con el levantamiento histórico más alto bajo los filtros aplicados.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Sentadilla Card -->
+                    <div class="bg-[#181824] border border-gray-800 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold text-green-500 tracking-wider uppercase block mb-2">Sentadilla (SQ)</span>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <span class="text-sm text-gray-400">Tú: <b id="comp-sq-user" class="text-white font-bold text-base">0 kg</b></span>
+                                <span class="text-xs text-gray-500">Récord: <b id="comp-sq-max" class="text-green-400/90 font-bold text-sm">-- kg</b></span>
+                            </div>
+                        </div>
+                        <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden mt-2">
+                            <div id="bar-sq-progress" class="bg-green-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <span id="label-sq-percent" class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
+                    </div>
+
+                    <!-- Banca Card -->
+                    <div class="bg-[#181824] border border-gray-800 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold text-blue-400 tracking-wider uppercase block mb-2">Press Banca (BP)</span>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <span class="text-sm text-gray-400">Tú: <b id="comp-bp-user" class="text-white font-bold text-base">0 kg</b></span>
+                                <span class="text-xs text-gray-500">Récord: <b id="comp-bp-max" class="text-blue-400/90 font-bold text-sm">-- kg</b></span>
+                            </div>
+                        </div>
+                        <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden mt-2">
+                            <div id="bar-bp-progress" class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <span id="label-bp-percent" class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
+                    </div>
+
+                    <!-- Peso Muerto Card -->
+                    <div class="bg-[#181824] border border-gray-800 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold text-red-500 tracking-wider uppercase block mb-2">Peso Muerto (DL)</span>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <span class="text-sm text-gray-400">Tú: <b id="comp-dl-user" class="text-white font-bold text-base">0 kg</b></span>
+                                <span class="text-xs text-gray-500">Récord: <b id="comp-dl-max" class="text-red-400/90 font-bold text-sm">-- kg</b></span>
+                            </div>
+                        </div>
+                        <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden mt-2">
+                            <div id="bar-dl-progress" class="bg-red-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <span id="label-dl-percent" class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
+                    </div>
+                </div>
+            </div>
             
             <!-- BLOQUE 1: Empates Exactos -->
             <div>
@@ -554,6 +611,32 @@
                         sexBadge.textContent = 'OPEN';
                         sexBadge.className = "bg-gray-500/10 text-gray-400 border border-gray-500/20 text-[10px] font-bold px-2.5 py-1 rounded-md shrink-0 block";
                     }
+
+                    // --- SECCIÓN DE COMPARATIVAS DE RÉCORDS (SBD) ---
+                    const maxSq = data.estadisticas.max_squat || sq || 100;
+                    const maxBp = data.estadisticas.max_bench || bp || 100;
+                    const maxDl = data.estadisticas.max_deadlift || dl || 100;
+
+                    document.getElementById('comp-sq-user').textContent = `${sq} kg`;
+                    document.getElementById('comp-sq-max').textContent = `${maxSq} kg`;
+                    document.getElementById('comp-bp-user').textContent = `${bp} kg`;
+                    document.getElementById('comp-bp-max').textContent = `${maxBp} kg`;
+                    document.getElementById('comp-dl-user').textContent = `${dl} kg`;
+                    document.getElementById('comp-dl-max').textContent = `${maxDl} kg`;
+
+                    // Cálculo del porcentaje del récord y ajuste de barras de progreso
+                    const percentSq = Math.min(Math.round((sq / maxSq) * 100), 100);
+                    const percentBp = Math.min(Math.round((bp / maxBp) * 100), 100);
+                    const percentDl = Math.min(Math.round((dl / maxDl) * 100), 100);
+
+                    document.getElementById('bar-sq-progress').style.width = `${percentSq}%`;
+                    document.getElementById('label-sq-percent').textContent = `${percentSq}% del récord`;
+
+                    document.getElementById('bar-bp-progress').style.width = `${percentBp}%`;
+                    document.getElementById('label-bp-percent').textContent = `${percentBp}% del récord`;
+
+                    document.getElementById('bar-dl-progress').style.width = `${percentDl}%`;
+                    document.getElementById('label-dl-percent').textContent = `${percentDl}% del récord`;
 
                     // Listas de atletas
                     if (data.empates.length === 0) {
