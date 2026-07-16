@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Powerlifting Matcher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <main class="container mx-auto px-4 py-12 max-w-4xl">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-red-500 tracking-tight">
+                POWERDATA MATCH
+            </h1>
+            <p class="text-gray-400 mt-2">Introduce tu marca total en kilogramos y descubre a los atletas que están a tu nivel o superándote.</p>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700 max-w-md mx-auto mb-10">
+            <div class="flex flex-col gap-4">
+                <label for="totalInput" class="text-sm font-semibold text-gray-300">Tu Total de Kilos (SBD):</label>
+                <div class="flex gap-2">
+                    <input type="number" id="totalInput" placeholder="Ej: 500" min="0" step="0.5"
+                        class="bg-gray-950 border border-gray-700 rounded-lg px-4 py-3 text-lg w-full text-white focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <button onclick="buscarAtletas()" 
+                        class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-gray-950 font-bold px-6 py-3 rounded-lg transition-all active:scale-95">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultadosSeccion" class="hidden bg-gray-800 rounded-2xl shadow-xl border border-gray-700 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-700 bg-gray-850">
+                <h2 class="text-lg font-bold text-yellow-400">Top 10 atletas con tu marca o superior</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-900 text-gray-400 text-xs uppercase tracking-wider">
+                            <th class="py-3 px-6">Atleta</th>
+                            <th class="py-3 px-6 text-center">Peso Corporal</th>
+                            <th class="py-3 px-6 text-center">Sentadilla</th>
+                            <th class="py-3 px-6 text-center">Banca</th>
+                            <th class="py-3 px-6 text-center">P. Muerto</th>
+                            <th class="py-3 px-6 text-right font-bold text-white">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaCuerpo" class="divide-y divide-gray-750 text-sm">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="sinResultados" class="hidden text-center p-8 bg-gray-800 rounded-2xl border border-gray-700 max-w-md mx-auto">
+            <p class="text-gray-400">No encontramos atletas con marcas iguales o superiores en este momento. ¡Eres el más fuerte de la base de datos! 🏋️‍♂️🔥</p>
+        </div>
+    </main>
+
+    <script>
+        async function buscarAtletas() {
+            const total = document.getElementById('totalInput').value;
+            if (!total) {
+                alert("Por favor, introduce un número de total válido.");
+                return;
+            }
+
+            try {
+                const response = await fetch('/buscar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ total: total })
+                });
+                
+                const data = await response.json();
+                
+                const tablaSeccion = document.getElementById('resultadosSeccion');
+                const sinResultados = document.getElementById('sinResultados');
+                const tablaCuerpo = document.getElementById('tablaCuerpo');
+                
+                tablaCuerpo.innerHTML = ''; // Limpiar datos previos
+
+                if (data.success && data.atletas.length > 0) {
+                    tablaSeccion.classList.remove('hidden');
+                    sinResultados.classList.add('hidden');
+                    
+                    data.atletas.forEach(atleta => {
+                        const fila = `
+                            <tr class="hover:bg-gray-750 transition-colors">
+                                <td class="py-4 px-6 font-semibold text-white">${atleta.nombre}</td>
+                                <td class="py-4 px-6 text-center text-gray-350">${atleta.bodyweight} kg</td>
+                                <td class="py-4 px-6 text-center text-gray-350">${atleta.sentadilla} kg</td>
+                                <td class="py-4 px-6 text-center text-gray-350">${atleta.banca} kg</td>
+                                <td class="py-4 px-6 text-center text-gray-350">${atleta.peso_muerto} kg</td>
+                                <td class="py-4 px-6 text-right font-bold text-yellow-400">${atleta.total} kg</td>
+                            </tr>
+                        `;
+                        tablaCuerpo.innerHTML += fila;
+                    });
+                } else {
+                    tablaSeccion.classList.add('hidden');
+                    sinResultados.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error("Error al buscar atletas:", error);
+                alert("Ocurrió un error al conectar con el servidor.");
+            }
+        }
+    </script>
+</body>
+</html>
