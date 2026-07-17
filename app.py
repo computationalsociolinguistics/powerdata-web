@@ -124,7 +124,7 @@ def buscar():
 
             # --- CONSULTA C: Rivales superiores (Próximos 10 a batir de menor a mayor total) ---
             query_rivales = text(f"""
-                SELECT a.nombre, a.sexo, r.bodyweight, r.weight_class, r.nivel,
+                SELECT a.nombre, a.sexo, r.bodyweight, r.weight_class,
                        r.best_squat, r.best_bench, r.best_deadlift, r.total, r.campeonato
                 FROM resultados r
                 JOIN atletas a ON r.id_atleta = a.id_atleta
