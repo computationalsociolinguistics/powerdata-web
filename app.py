@@ -67,10 +67,10 @@ def buscar():
         # Unir condiciones
         where_clause = " AND ".join(condiciones) if condiciones else "1=1"
 
-        # 2. CONSULTAS CON EL NUEVO JOIN A CAMPEONATOS
+        # 2. CONSULTAS CON EL JOIN A CAMPEONATOS (Para mantener el nivel estable)
         with engine.connect() as conn:
 
-            # --- Consulta A: Estadísticas con Join a Campeonatos ---
+            # --- Consulta A: Estadísticas (Sin los campos MAX) ---
             query_stats = text(
                 f"""
                 SELECT 
@@ -78,10 +78,7 @@ def buscar():
                     COALESCE(STDDEV(r.total), 0) as desviacion,
                     COALESCE(AVG(r.best_squat), 0) as avg_squat,
                     COALESCE(AVG(r.best_bench), 0) as avg_bench,
-                    COALESCE(AVG(r.best_deadlift), 0) as avg_deadlift,
-                    COALESCE(MAX(r.best_squat), 0) as max_squat,
-                    COALESCE(MAX(r.best_bench), 0) as max_bench,
-                    COALESCE(MAX(r.best_deadlift), 0) as max_deadlift
+                    COALESCE(AVG(r.best_deadlift), 0) as avg_deadlift
                 FROM resultados r
                 JOIN atletas a ON r.id_atleta = a.id_atleta
                 JOIN campeonatos c ON r.id_campeonato = c.id_campeonato
@@ -125,16 +122,13 @@ def buscar():
 
             # 3. PROCESAR Y FORMATEAR RESULTADOS PARA EL FRONTEND
             
-            # Formatear estadísticas generales
+            # Formatear estadísticas generales sin campos extras que provoquen fallos
             estadisticas = {
-                "media": round(float(res_stats["media"]), 1),
-                "desviacion": round(float(res_stats["desviacion"]), 1),
-                "avg_squat": round(float(res_stats["avg_squat"]), 1),
-                "avg_bench": round(float(res_stats["avg_bench"]), 1),
-                "avg_deadlift": round(float(res_stats["avg_deadlift"]), 1),
-                "max_squat": float(res_stats["max_squat"]),
-                "max_bench": float(res_stats["max_bench"]),
-                "max_deadlift": float(res_stats["max_deadlift"])
+                "media": round(float(res_stats["media"] or 0), 1),
+                "desviacion": round(float(res_stats["desviacion"] or 0), 1),
+                "avg_squat": round(float(res_stats["avg_squat"] or 0), 1),
+                "avg_bench": round(float(res_stats["avg_bench"] or 0), 1),
+                "avg_deadlift": round(float(res_stats["avg_deadlift"] or 0), 1)
             }
 
             # Formatear lista de atletas empatados
