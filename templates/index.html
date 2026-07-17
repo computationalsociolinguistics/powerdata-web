@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,21 +10,32 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { background-color: #0b0b0f; }
+        body {
+            background-color: #0b0b0f;
+        }
+
         .loader {
             border-top-color: #eab308;
             animation: spinner 1.5s linear infinite;
         }
+
         @keyframes spinner {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
+
         .cromo-holografico {
             border: 3px solid #eab308;
             box-shadow: 0 0 25px rgba(234, 179, 8, 0.2);
         }
     </style>
 </head>
+
 <body class="text-gray-100 min-h-screen flex flex-col justify-between font-sans">
 
     <header class="border-b border-gray-800 bg-[#0f0f15] py-5 px-4 shadow-lg">
@@ -31,7 +43,8 @@
             <h1 class="text-2xl font-black tracking-wider text-yellow-500 flex items-center gap-2">
                 <i class="fa-solid fa-dumbbell text-yellow-500"></i> POWERDATA MATCH
             </h1>
-            <span class="text-xs font-semibold bg-yellow-500/10 text-yellow-500 px-3 py-1 rounded-full border border-yellow-500/20">
+            <span
+                class="text-xs font-semibold bg-yellow-500/10 text-yellow-500 px-3 py-1 rounded-full border border-yellow-500/20">
                 AEP PRO EDITION
             </span>
         </div>
@@ -40,20 +53,25 @@
     <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
         <div class="text-center mb-8">
             <h2 class="text-3xl font-extrabold md:text-4xl text-white mb-2">Compara tus marcas de Fuerza</h2>
-            <p class="text-gray-400 text-sm md:text-base">Introduce tus levantamientos, genera tu cromo de atleta personalizado y analiza tus ratios frente a la élite.</p>
+            <p class="text-gray-400 text-sm md:text-base">Introduce tus levantamientos, genera tu cromo de atleta
+                personalizado y analiza tus ratios frente a la élite.</p>
         </div>
 
         <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl mb-8">
             <form id="form-buscador" class="space-y-6">
-                
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-400 mb-1" for="nombre-atleta">Tu Nombre o Instagram (@usuario)</label>
-                        <input type="text" id="nombre-atleta" required placeholder="Ej: @pablo_sbd" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-xs font-semibold text-gray-400 mb-1" for="nombre-atleta">Tu Nombre o
+                            Instagram (@usuario)</label>
+                        <input type="text" id="nombre-atleta" required placeholder="Ej: @pablo_sbd"
+                            class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-400 mb-1" for="bodyweight">Tu Peso Corporal (kg)</label>
-                        <input type="number" step="0.1" id="bodyweight" required placeholder="Ej: 82.5" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+                        <label class="block text-xs font-semibold text-gray-400 mb-1" for="bodyweight">Tu Peso Corporal
+                            (kg)</label>
+                        <input type="number" step="0.1" id="bodyweight" required placeholder="Ej: 82.5"
+                            class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                     </div>
                 </div>
 
@@ -63,16 +81,22 @@
                     </h4>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1" for="sq">Sentadilla (kg)</label>
-                            <input type="number" step="0.5" id="sq" required placeholder="0" class="input-marca w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+                            <label class="block text-xs font-semibold text-gray-400 mb-1" for="sq">Sentadilla
+                                (kg)</label>
+                            <input type="number" step="0.5" id="sq" required placeholder="0"
+                                class="input-marca w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1" for="bp">Press de Banca (kg)</label>
-                            <input type="number" step="0.5" id="bp" required placeholder="0" class="input-marca w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+                            <label class="block text-xs font-semibold text-gray-400 mb-1" for="bp">Press de Banca
+                                (kg)</label>
+                            <input type="number" step="0.5" id="bp" required placeholder="0"
+                                class="input-marca w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1" for="dl">Peso Muerto (kg)</label>
-                            <input type="number" step="0.5" id="dl" required placeholder="0" class="input-marca w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+                            <label class="block text-xs font-semibold text-gray-400 mb-1" for="dl">Peso Muerto
+                                (kg)</label>
+                            <input type="number" step="0.5" id="dl" required placeholder="0"
+                                class="input-marca w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                         </div>
                     </div>
                 </div>
@@ -92,21 +116,26 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-gray-400 mb-1" for="filtro-sexo">Sexo</label>
-                            <select id="filtro-sexo" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+                            <select id="filtro-sexo"
+                                class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                                 <option value="Cualquiera">Todos los Sexos</option>
                                 <option value="M">Masculino (M)</option>
                                 <option value="F">Femenino (F)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1" for="filtro-categoria">Categoría de Peso</label>
-                            <select id="filtro-categoria" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+                            <label class="block text-xs font-semibold text-gray-400 mb-1"
+                                for="filtro-categoria">Categoría de Peso</label>
+                            <select id="filtro-categoria"
+                                class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                                 <option value="Cualquiera">Cualquier Categoría</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-400 mb-1" for="filtro-nivel">Nivel de Campeonato</label>
-                            <select id="filtro-nivel" class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
+                            <label class="block text-xs font-semibold text-gray-400 mb-1" for="filtro-nivel">Nivel de
+                                Campeonato</label>
+                            <select id="filtro-nivel"
+                                class="w-full bg-[#181824] border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-yellow-500">
                                 <option value="Cualquiera">Todos los Niveles</option>
                                 <option value="1">Nivel 1 (AEP1 - Nacional)</option>
                                 <option value="2">Nivel 2 (AEP2 - Regional)</option>
@@ -127,25 +156,91 @@
 
         <div id="loader-container" class="hidden flex flex-col items-center justify-center py-12">
             <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-800 h-16 w-16 mb-4"></div>
-            <p class="text-yellow-500 font-bold tracking-wider animate-pulse text-sm">PROCESANDO DATOS EN TIEMPO REAL...</p>
+            <p class="text-yellow-500 font-bold tracking-wider animate-pulse text-sm">PROCESANDO DATOS EN TIEMPO REAL...
+            </p>
+        </div>
+
+        <!-- Tabla de Récords Absolutos de la Categoría -->
+        <div class="bg-slate-800/50 rounded-2xl border border-slate-700/50 overflow-hidden shadow-xl mb-6">
+            <div class="bg-slate-900/80 px-5 py-4 border-b border-slate-700/50 flex items-center justify-between">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-yellow-500 flex items-center gap-2">
+                    <i class="fa-solid fa-crown text-yellow-500"></i> Récords de la Categoría Seleccionada
+                </h3>
+                <span
+                    class="text-[10px] bg-yellow-500/10 text-yellow-500 px-2.5 py-1 rounded-full font-semibold border border-yellow-500/20">
+                    Marcas Históricas
+                </span>
+            </div>
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr
+                        class="bg-slate-900/40 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-700/50">
+                        <th class="py-3 px-5">Movimiento</th>
+                        <th class="py-3 px-5 text-right font-semibold">Récord Máximo</th>
+                        <th class="py-3 px-5 text-right font-semibold text-slate-500">Tu Marca</th>
+                        <th class="py-3 px-5 text-right font-semibold text-indigo-400">Diferencia</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-700/30 text-sm">
+                    <!-- Sentadilla -->
+                    <tr class="hover:bg-slate-800/20 transition-colors">
+                        <td class="py-4 px-5 font-bold text-white flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Sentadilla (SQ)
+                        </td>
+                        <td id="record-sq" class="py-4 px-5 text-right font-extrabold text-yellow-400 text-base">-- kg
+                        </td>
+                        <td id="tu-sq" class="py-4 px-5 text-right text-slate-400">-- kg</td>
+                        <td id="dif-sq" class="py-4 px-5 text-right font-bold text-slate-400">-- kg</td>
+                    </tr>
+                    <!-- Banca -->
+                    <tr class="hover:bg-slate-800/20 transition-colors">
+                        <td class="py-4 px-5 font-bold text-white flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Press de Banca (BP)
+                        </td>
+                        <td id="record-bp" class="py-4 px-5 text-right font-extrabold text-yellow-400 text-base">-- kg
+                        </td>
+                        <td id="tu-bp" class="py-4 px-5 text-right text-slate-400">-- kg</td>
+                        <td id="dif-bp" class="py-4 px-5 text-right font-bold text-slate-400">-- kg</td>
+                    </tr>
+                    <!-- Peso Muerto -->
+                    <tr class="hover:bg-slate-800/20 transition-colors">
+                        <td class="py-4 px-5 font-bold text-white flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Peso Muerto (DL)
+                        </td>
+                        <td id="record-dl" class="py-4 px-5 text-right font-extrabold text-yellow-400 text-base">-- kg
+                        </td>
+                        <td id="tu-dl" class="py-4 px-5 text-right text-slate-400">-- kg</td>
+                        <td id="dif-dl" class="py-4 px-5 text-right font-bold text-slate-400">-- kg</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div id="seccion-resultados" class="hidden space-y-10">
 
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl">
+            <div
+                class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl">
                 <div class="md:col-span-5 flex flex-col items-center">
-                    <div id="cromo-atleta" class="cromo-holografico w-[300px] h-[430px] rounded-2xl p-6 relative flex flex-col justify-between select-none" style="background: linear-gradient(135deg, #151522 0%, #0c0c14 60%, #1a0f24 100%); box-sizing: border-box;">
+                    <div id="cromo-atleta"
+                        class="cromo-holografico w-[300px] h-[430px] rounded-2xl p-6 relative flex flex-col justify-between select-none"
+                        style="background: linear-gradient(135deg, #151522 0%, #0c0c14 60%, #1a0f24 100%); box-sizing: border-box;">
                         <div class="w-full mb-4">
                             <div class="flex justify-between items-start gap-4">
                                 <div class="min-w-0 flex-1">
-                                    <span class="text-[10px] tracking-widest text-yellow-500 font-bold uppercase block mb-1">POWERLIFTER</span>
+                                    <span
+                                        class="text-[10px] tracking-widest text-yellow-500 font-bold uppercase block mb-1">POWERLIFTER</span>
                                     <div class="max-w-[170px]">
-                                        <h4 id="cromo-nombre" class="text-[18px] font-bold text-white leading-snug truncate" style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">ATLETA</h4>
+                                        <h4 id="cromo-nombre"
+                                            class="text-[18px] font-bold text-white leading-snug truncate"
+                                            style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                            ATLETA</h4>
                                     </div>
                                 </div>
-                                <span id="cromo-sex-badge" class="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-bold px-2.5 py-1 rounded-md shrink-0 block">CAT</span>
+                                <span id="cromo-sex-badge"
+                                    class="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-bold px-2.5 py-1 rounded-md shrink-0 block">CAT</span>
                             </div>
-                            <div class="flex gap-2 items-center mt-2.5 text-xs text-gray-400" style="font-family: system-ui, sans-serif;">
+                            <div class="flex gap-2 items-center mt-2.5 text-xs text-gray-400"
+                                style="font-family: system-ui, sans-serif;">
                                 <span>BW: <b id="cromo-bw" class="text-white font-semibold">--kg</b></span>
                                 <span class="text-gray-700">|</span>
                                 <span>Clase: <b id="cromo-class" class="text-white font-semibold">--</b></span>
@@ -153,31 +248,43 @@
                         </div>
 
                         <div class="text-center w-full my-auto py-1">
-                            <span class="text-[10px] tracking-wider text-gray-400 font-semibold uppercase block mb-1">TOTAL SBD</span>
-                            <div class="text-5xl font-bold text-yellow-500 tracking-tight block mb-4" style="font-family: system-ui, sans-serif; line-height: 1;">
-                                <span id="cromo-total-num">0.0</span><span class="text-xl font-semibold text-yellow-500/80 ml-1">kg</span>
+                            <span
+                                class="text-[10px] tracking-wider text-gray-400 font-semibold uppercase block mb-1">TOTAL
+                                SBD</span>
+                            <div class="text-5xl font-bold text-yellow-500 tracking-tight block mb-4"
+                                style="font-family: system-ui, sans-serif; line-height: 1;">
+                                <span id="cromo-total-num">0.0</span><span
+                                    class="text-xl font-semibold text-yellow-500/80 ml-1">kg</span>
                             </div>
                             <div class="inline-block mt-4 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full">
-                                <span class="text-[10px] text-gray-300 font-medium">Percentil de Fuerza: <strong id="cromo-percentil" class="text-yellow-400 font-bold">--%</strong></span>
+                                <span class="text-[10px] text-gray-300 font-medium">Percentil de Fuerza: <strong
+                                        id="cromo-percentil" class="text-yellow-400 font-bold">--%</strong></span>
                             </div>
                         </div>
 
                         <div class="border-t border-gray-800/80 pt-4 w-full mt-auto">
                             <div class="grid grid-cols-3 text-center gap-2">
                                 <div class="bg-white/5 py-2 rounded-lg border border-white/5">
-                                    <span class="text-[9px] text-green-500 font-bold block tracking-wider uppercase">SQUAT</span>
-                                    <span id="cromo-sq" class="text-sm font-bold text-white block mt-0.5" style="font-family: system-ui, sans-serif;">0 kg</span>
+                                    <span
+                                        class="text-[9px] text-green-500 font-bold block tracking-wider uppercase">SQUAT</span>
+                                    <span id="cromo-sq" class="text-sm font-bold text-white block mt-0.5"
+                                        style="font-family: system-ui, sans-serif;">0 kg</span>
                                 </div>
                                 <div class="bg-white/5 py-2 rounded-lg border border-white/5">
-                                    <span class="text-[9px] text-blue-400 font-bold block tracking-wider uppercase">BENCH</span>
-                                    <span id="cromo-bp" class="text-sm font-bold text-white block mt-0.5" style="font-family: system-ui, sans-serif;">0 kg</span>
+                                    <span
+                                        class="text-[9px] text-blue-400 font-bold block tracking-wider uppercase">BENCH</span>
+                                    <span id="cromo-bp" class="text-sm font-bold text-white block mt-0.5"
+                                        style="font-family: system-ui, sans-serif;">0 kg</span>
                                 </div>
                                 <div class="bg-white/5 py-2 rounded-lg border border-white/5">
-                                    <span class="text-[9px] text-red-500 font-bold block tracking-wider uppercase">DEADLIFT</span>
-                                    <span id="cromo-dl" class="text-sm font-bold text-white block mt-0.5" style="font-family: system-ui, sans-serif;">0 kg</span>
+                                    <span
+                                        class="text-[9px] text-red-500 font-bold block tracking-wider uppercase">DEADLIFT</span>
+                                    <span id="cromo-dl" class="text-sm font-bold text-white block mt-0.5"
+                                        style="font-family: system-ui, sans-serif;">0 kg</span>
                                 </div>
                             </div>
-                            <div class="text-center mt-4 text-[9px] font-semibold tracking-wider text-yellow-500/40 uppercase" style="font-family: system-ui, sans-serif;">
+                            <div class="text-center mt-4 text-[9px] font-semibold tracking-wider text-yellow-500/40 uppercase"
+                                style="font-family: system-ui, sans-serif;">
                                 <i class="fa-solid fa-copyright"></i> Damián Morales Sánchez
                             </div>
                         </div>
@@ -189,36 +296,45 @@
                         <i class="fa-solid fa-id-card text-yellow-500"></i> ¡Tu Cromo de Atleta está listo!
                     </h3>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        Hemos diseñado esta ficha de rendimiento personalizada con tu perfil de marcas, peso y percentil de fuerza nacional. Descárgala ya y súbela a tus **Instagram Stories** para compararte con tus amigos de entrenamiento.
+                        Hemos diseñado esta ficha de rendimiento personalizada con tu perfil de marcas, peso y percentil
+                        de fuerza nacional. Descárgala ya y súbela a tus **Instagram Stories** para compararte con tus
+                        amigos de entrenamiento.
                     </p>
-                    <button id="btn-descargar-cromo" class="bg-yellow-500 hover:bg-yellow-600 text-black font-black uppercase px-6 py-3.5 rounded-xl shadow-lg transition duration-200 flex items-center gap-2">
+                    <button id="btn-descargar-cromo"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-black font-black uppercase px-6 py-3.5 rounded-xl shadow-lg transition duration-200 flex items-center gap-2">
                         <i class="fa-solid fa-download"></i> Descargar Cromo en PNG
                     </button>
                 </div>
             </div>
-            
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
+                <div
+                    class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
                     <div class="flex items-center justify-between mb-4">
                         <div>
                             <h3 class="text-lg font-bold text-white flex items-center gap-2">
                                 <i class="fa-solid fa-chart-area text-yellow-500"></i> Campana de Distribución
                             </h3>
-                            <p class="text-xs text-gray-400 mt-0.5">Tu ubicación respecto a la población seleccionada.</p>
+                            <p class="text-xs text-gray-400 mt-0.5">Tu ubicación respecto a la población seleccionada.
+                            </p>
                         </div>
-                        <span id="percentil-badge" class="text-lg font-black text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 px-3 py-1 rounded-xl">-- %</span>
+                        <span id="percentil-badge"
+                            class="text-lg font-black text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 px-3 py-1 rounded-xl">--
+                            %</span>
                     </div>
                     <div class="relative w-full h-64">
                         <canvas id="graficoDistribucion"></canvas>
                     </div>
                 </div>
 
-                <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
+                <div
+                    class="bg-[#12121a] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between">
                     <div class="mb-4">
                         <h3 class="text-lg font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-chart-pie text-yellow-500"></i> Perfil de Fuerza (SBD)
                         </h3>
-                        <p class="text-xs text-gray-400 mt-0.5">Tus levantamientos vs. el promedio del filtro en cada movimiento.</p>
+                        <p class="text-xs text-gray-400 mt-0.5">Tus levantamientos vs. el promedio del filtro en cada
+                            movimiento.</p>
                     </div>
                     <div class="relative w-full h-64 flex justify-center">
                         <div class="w-full max-w-[280px]">
@@ -234,9 +350,11 @@
                         <h3 class="text-lg font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-crown text-yellow-500"></i> Récords de la Categoría Seleccionada
                         </h3>
-                        <p class="text-xs text-gray-400 mt-0.5">Tus levantamientos frente a las mejores marcas absolutas logradas bajo tus filtros de búsqueda.</p>
+                        <p class="text-xs text-gray-400 mt-0.5">Tus levantamientos frente a las mejores marcas absolutas
+                            logradas bajo tus filtros de búsqueda.</p>
                     </div>
-                    <span id="label-filtro-activo" class="text-[11px] font-bold text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 px-3 py-1 rounded-full shrink-0 self-start sm:self-auto">
+                    <span id="label-filtro-activo"
+                        class="text-[11px] font-bold text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 px-3 py-1 rounded-full shrink-0 self-start sm:self-auto">
                         Filtro: Calculando...
                     </span>
                 </div>
@@ -244,58 +362,77 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-[#181824] border border-gray-800 rounded-xl p-4 flex flex-col justify-between">
                         <div>
-                            <span class="text-xs font-bold text-green-500 tracking-wider uppercase block mb-2">Sentadilla (SQ)</span>
+                            <span
+                                class="text-xs font-bold text-green-500 tracking-wider uppercase block mb-2">Sentadilla
+                                (SQ)</span>
                             <div class="flex justify-between items-baseline mb-2">
-                                <span class="text-sm text-gray-400">Tú: <b id="comp-sq-user" class="text-white font-bold text-base">0 kg</b></span>
-                                <span class="text-xs text-gray-500">Récord Cat: <b id="comp-sq-max" class="text-green-400/90 font-bold text-sm">-- kg</b></span>
+                                <span class="text-sm text-gray-400">Tú: <b id="comp-sq-user"
+                                        class="text-white font-bold text-base">0 kg</b></span>
+                                <span class="text-xs text-gray-500">Récord Cat: <b id="comp-sq-max"
+                                        class="text-green-400/90 font-bold text-sm">-- kg</b></span>
                             </div>
                         </div>
                         <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden mt-2">
-                            <div id="bar-sq-progress" class="bg-green-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            <div id="bar-sq-progress"
+                                class="bg-green-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%">
+                            </div>
                         </div>
-                        <span id="label-sq-percent" class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
+                        <span id="label-sq-percent"
+                            class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
                     </div>
 
                     <div class="bg-[#181824] border border-gray-800 rounded-xl p-4 flex flex-col justify-between">
                         <div>
-                            <span class="text-xs font-bold text-blue-400 tracking-wider uppercase block mb-2">Press Banca (BP)</span>
+                            <span class="text-xs font-bold text-blue-400 tracking-wider uppercase block mb-2">Press
+                                Banca (BP)</span>
                             <div class="flex justify-between items-baseline mb-2">
-                                <span class="text-sm text-gray-400">Tú: <b id="comp-bp-user" class="text-white font-bold text-base">0 kg</b></span>
-                                <span class="text-xs text-gray-500">Récord Cat: <b id="comp-bp-max" class="text-blue-400/90 font-bold text-sm">-- kg</b></span>
+                                <span class="text-sm text-gray-400">Tú: <b id="comp-bp-user"
+                                        class="text-white font-bold text-base">0 kg</b></span>
+                                <span class="text-xs text-gray-500">Récord Cat: <b id="comp-bp-max"
+                                        class="text-blue-400/90 font-bold text-sm">-- kg</b></span>
                             </div>
                         </div>
                         <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden mt-2">
-                            <div id="bar-bp-progress" class="bg-blue-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            <div id="bar-bp-progress" class="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
+                                style="width: 0%"></div>
                         </div>
-                        <span id="label-bp-percent" class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
+                        <span id="label-bp-percent"
+                            class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
                     </div>
 
                     <div class="bg-[#181824] border border-gray-800 rounded-xl p-4 flex flex-col justify-between">
                         <div>
-                            <span class="text-xs font-bold text-red-500 tracking-wider uppercase block mb-2">Peso Muerto (DL)</span>
+                            <span class="text-xs font-bold text-red-500 tracking-wider uppercase block mb-2">Peso Muerto
+                                (DL)</span>
                             <div class="flex justify-between items-baseline mb-2">
-                                <span class="text-sm text-gray-400">Tú: <b id="comp-dl-user" class="text-white font-bold text-base">0 kg</b></span>
-                                <span class="text-xs text-gray-500">Récord Cat: <b id="comp-dl-max" class="text-red-400/90 font-bold text-sm">-- kg</b></span>
+                                <span class="text-sm text-gray-400">Tú: <b id="comp-dl-user"
+                                        class="text-white font-bold text-base">0 kg</b></span>
+                                <span class="text-xs text-gray-500">Récord Cat: <b id="comp-dl-max"
+                                        class="text-red-400/90 font-bold text-sm">-- kg</b></span>
                             </div>
                         </div>
                         <div class="w-full bg-gray-900 rounded-full h-2.5 overflow-hidden mt-2">
-                            <div id="bar-dl-progress" class="bg-red-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            <div id="bar-dl-progress" class="bg-red-500 h-2.5 rounded-full transition-all duration-500"
+                                style="width: 0%"></div>
                         </div>
-                        <span id="label-dl-percent" class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
+                        <span id="label-dl-percent"
+                            class="text-[10px] text-gray-500 mt-2 block text-right font-semibold">0% del récord</span>
                     </div>
                 </div>
             </div>
-            
+
             <div>
                 <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-equals text-yellow-500"></i> Atletas con tu mismo Total (<span id="total-exacto-label"></span> kg):
+                    <i class="fa-solid fa-equals text-yellow-500"></i> Atletas con tu mismo Total (<span
+                        id="total-exacto-label"></span> kg):
                 </h3>
                 <div id="lista-exactos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
 
             <div>
                 <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-trend-up text-yellow-500"></i> Siguientes 10 rivales a batir (Total Superior):
+                    <i class="fa-solid fa-arrow-trend-up text-yellow-500"></i> Siguientes 10 rivales a batir (Total
+                    Superior):
                 </h3>
                 <div id="lista-rivales" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
@@ -344,7 +481,7 @@
 
             for (let x = minX; x <= maxX; x += step) {
                 const y = (1 / (desviacion * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - media) / desviacion, 2));
-                dataPuntos.push({x: Math.round(x), y: y});
+                dataPuntos.push({ x: Math.round(x), y: y });
                 labels.push(Math.round(x));
             }
 
@@ -490,7 +627,7 @@
                 </div>`;
         }
 
-        document.getElementById('form-buscador').addEventListener('submit', async function(e) {
+        document.getElementById('form-buscador').addEventListener('submit', async function (e) {
             e.preventDefault();
             const nombre = document.getElementById('nombre-atleta').value;
             const total = document.getElementById('total').value;
@@ -520,8 +657,8 @@
                 const response = await fetch('/buscar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        total: parseFloat(total), 
+                    body: JSON.stringify({
+                        total: parseFloat(total),
                         bodyweight: parseFloat(bodyweight),
                         sexo: sexo,
                         categoria: categoria,
@@ -538,7 +675,7 @@
                     if (data.estadisticas.media > 0) {
                         perc = calcularPercentil(parseFloat(total), data.estadisticas.media, data.estadisticas.desviacion);
                         document.getElementById('percentil-badge').textContent = `${perc}%`;
-                        
+
                         renderizarGraficoCampana(parseFloat(total), data.estadisticas.media, data.estadisticas.desviacion);
                         renderizarGraficoRadar(
                             sq, bp, dl,
@@ -559,7 +696,7 @@
                     document.getElementById('cromo-sq').textContent = `${sq} kg`;
                     document.getElementById('cromo-bp').textContent = `${bp} kg`;
                     document.getElementById('cromo-dl').textContent = `${dl} kg`;
-                    
+
                     const sexBadge = document.getElementById('cromo-sex-badge');
                     if (sexo === 'M') {
                         sexBadge.textContent = 'MASC';
@@ -636,10 +773,10 @@
             }
         });
 
-        document.getElementById('btn-descargar-cromo').addEventListener('click', function() {
+        document.getElementById('btn-descargar-cromo').addEventListener('click', function () {
             const cromoElement = document.getElementById('cromo-atleta');
             html2canvas(cromoElement, {
-                backgroundColor: null, 
+                backgroundColor: null,
                 scale: 2,
                 useCORS: true,
                 logging: false
@@ -680,6 +817,48 @@
 
         selectSexo.addEventListener('change', actualizarCategorias);
         actualizarCategorias();
+
+        // Asegúrate de extraer las marcas actuales que el usuario introdujo en su formulario
+        const user_sq = parseFloat(document.getElementById('input_sq').value) || 0;
+        const user_bp = parseFloat(document.getElementById('input_bp').value) || 0;
+        const user_dl = parseFloat(document.getElementById('input_dl').value) || 0;
+
+        // Extraer los récords que nos devolvió el app.py en las estadísticas
+        const record_sq = data.estadisticas.max_squat;
+        const record_bp = data.estadisticas.max_bench;
+        const record_dl = data.estadisticas.max_deadlift;
+
+        // 1. Pintar los Récords Absolutos en la tabla
+        document.getElementById('record-sq').innerText = `${record_sq} kg`;
+        document.getElementById('record-bp').innerText = `${record_bp} kg`;
+        document.getElementById('record-dl').innerText = `${record_dl} kg`;
+
+        // 2. Pintar las marcas del usuario para comparar
+        document.getElementById('tu-sq').innerText = `${user_sq} kg`;
+        document.getElementById('tu-bp').innerText = `${user_bp} kg`;
+        document.getElementById('tu-dl').innerText = `${user_dl} kg`;
+
+        // 3. Función interna para calcular y dar formato a la diferencia
+        function actualizarDiferencia(idElemento, record, usuario) {
+            const celda = document.getElementById(idElemento);
+            const dif = usuario - record;
+
+            if (dif >= 0) {
+                // ¡El usuario ha superado o igualado el récord de la categoría!
+                celda.innerText = `+${dif.toFixed(1)} kg 🔥`;
+                celda.className = "py-4 px-5 text-right font-extrabold text-emerald-400";
+            } else {
+                // Al usuario todavía le falta para alcanzar el récord
+                celda.innerText = `${dif.toFixed(1)} kg`;
+                celda.className = "py-4 px-5 text-right font-semibold text-rose-400";
+            }
+        }
+
+        // Ejecutar los cálculos de diferencia
+        actualizarDiferencia('dif-sq', record_sq, user_sq);
+        actualizarDiferencia('dif-bp', record_bp, user_bp);
+        actualizarDiferencia('dif-dl', record_dl, user_dl);
     </script>
 </body>
+
 </html>
