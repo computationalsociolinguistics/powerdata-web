@@ -56,9 +56,9 @@ def buscar():
             condiciones.append("r.weight_class = :categoria")
             parametros["categoria"] = categoria
 
-        if nivel != "Cualquiera":
-            condiciones.append("r.nivel = :nivel")
-            parametros["nivel"] = int(nivel)
+        # if nivel != "Cualquiera":
+        #     condiciones.append("r.nivel = :nivel")
+        #     parametros["nivel"] = int(nivel)
 
         # Si no hay filtros, aplicamos una condición siempre verdadera
         where_clause = " AND ".join(condiciones) if condiciones else "1=1"
